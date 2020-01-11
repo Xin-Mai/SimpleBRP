@@ -9,15 +9,12 @@ public class Logistics {
     private String server;
     //金额（CNY）
     private float money;
-    //收货国家
-    private String country;
 
     public Logistics(){}
     public Logistics(String id)
     {
         this.id=id;
         this.server=null;
-        this.country=null;
         this.weight=0;
         this.money=0;
     }
@@ -67,4 +64,5 @@ public class Logistics {
     public void setMoney(float money) {
         this.money = money;
     }
+
 }

@@ -1,8 +1,8 @@
 package order;
 
 public class Goods {
-    //型号
-    private String type;
+    //编码
+    private String id;
     //售价
     private float price;
     //成本
@@ -13,7 +13,7 @@ public class Goods {
     public Goods(){}
     public Goods(String type)
     {
-        this.type=type;
+        this.id=type;
         this.quantity=1;
         this.cost=0;
         //在初始化时就应该用Id获取相关的成本和价格
@@ -41,12 +41,12 @@ public class Goods {
     }
 
 
-    public String getType() {
-        return type;
+    public String getId() {
+        return id;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setId(String type) {
+        this.id = type;
     }
 
     public float getCost() {

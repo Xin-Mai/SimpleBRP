@@ -1,9 +1,11 @@
 package order;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.SimpleFormatter;
 
 public class Order {
     //订单编号
@@ -18,6 +20,8 @@ public class Order {
     private List<Goods> goods;
     //物流信息
     private Logistics logistics;
+    //收货国家
+    private String country;
 
     public Order(String id)
     {
@@ -28,12 +32,13 @@ public class Order {
         this.goods=new ArrayList<>();
         this.logistics=new Logistics();
     }
-    public Order(String id,float money,List<Goods> goods,Logistics logistics)
+    public Order(String id,List<Goods> goods,Logistics logistics,String country)
     {
+        this.country=country;
         this.id=id;
-        this.money=money;
         this.goods=goods;
         this.logistics=logistics;
+        this.money=getMoney();
     }
 
     //添加商品
@@ -84,6 +89,14 @@ public class Order {
         return money;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public void setMoney(float money) {
         this.money = money;
     }
@@ -102,5 +115,19 @@ public class Order {
 
     public void setLogistics(Logistics logistics) {
         this.logistics = logistics;
+    }
+
+    public String getSqlData()
+    {
+        String sql;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        sql="('"+id+"','"+format.format(orderTime)+"','"+format.format(payTime)+"','"
+                +getMoney()+"',";
+        for(Goods g:goods)
+        {
+            sql=sql+"'"+g.getId()+"',";
+        }
+        sql=sql+"'"+country+"','"+logistics.getId()+"')";
+        return sql;
     }
 }
