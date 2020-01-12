@@ -1,5 +1,6 @@
 package order;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,6 +39,23 @@ public class Order {
         this.id=id;
         this.goods=goods;
         this.logistics=logistics;
+        this.money=getMoney();
+    }
+
+    public Order(String id,String orderDate,String payDate,List<Goods> goods,Logistics logistics,String country)
+    {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        this.country=country;
+        this.id=id;
+        this.goods=goods;
+        this.logistics=logistics;
+        try{
+            this.orderTime=format.parse(orderDate);
+            this.payTime=format.parse(orderDate);
+        }catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
         this.money=getMoney();
     }
 
@@ -121,8 +139,8 @@ public class Order {
     {
         String sql;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        sql="('"+id+"','"+format.format(orderTime)+"','"+format.format(payTime)+"','"
-                +getMoney()+"',";
+        sql="('"+id+"','"+format.format(orderTime)+"','"+format.format(payTime)+"',"
+                +getMoney()+",";
         for(Goods g:goods)
         {
             sql=sql+"'"+g.getId()+"',";

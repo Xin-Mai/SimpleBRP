@@ -11,10 +11,12 @@ public class Goods {
     private int quantity;
 
     public Goods(){}
-    public Goods(String type)
+    public Goods(String id)
     {
-        this.id=type;
-        this.quantity=1;
+        this.id=id;
+        int i=id.lastIndexOf(' ');
+        String s=id.substring(i+1);
+        quantity=Integer.parseInt(s);
         this.cost=0;
         //在初始化时就应该用Id获取相关的成本和价格
         //用map

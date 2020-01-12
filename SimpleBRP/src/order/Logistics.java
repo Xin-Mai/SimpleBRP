@@ -33,6 +33,10 @@ public class Logistics {
         this.weight=weight;
     }
 
+    public String getSqlData()
+    {
+        return "('"+id+"','"+server+"',"+weight+","+money+")";
+    }
     public String getId() {
         return id;
     }

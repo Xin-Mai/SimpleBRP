@@ -1,5 +1,6 @@
 package sample;
 
+import dataDA.DataDA;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +15,8 @@ public class Main extends Application {
         primaryStage.setTitle("卖表专用系统XD");
         Scene scene = new Scene(root,1067,600);
         scene.getStylesheets().add(getClass().getResource("mainStyle.css").toExternalForm());
+        DataDA da = new DataDA();
+        da.search("Russian");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
