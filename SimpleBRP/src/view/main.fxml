@@ -8,8 +8,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
-<VBox   fx:controller="sample.Controller"
-        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1067.0" spacing="10.0" stylesheets="@mainStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:controller="sample.Controller"
+      maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1067.0" spacing="10.0" stylesheets="@mainStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <HBox maxHeight="60.0" prefHeight="60.0" prefWidth="1067.0" spacing="10.0" styleClass="bg" VBox.vgrow="NEVER">
             <children>
@@ -25,9 +25,13 @@
                         onAction="#handleAddButtonAction"
                         maxWidth="Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0"  HBox.hgrow="ALWAYS">
                 </Button>
+                <Button fx:id="summaryData" text="综合数据"
+                        onAction="#handleDataButtonAction"
+                        maxWidth="Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0"  HBox.hgrow="ALWAYS">
+                </Button>
                 <HBox maxHeight="60.0" prefHeight="60.0" prefWidth="400.0" spacing="10.0" styleClass="bg" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                     <children>
-                        <TextField prefHeight="40.0" prefWidth="300.0" text="查询订单" HBox.hgrow="ALWAYS"/>
+                        <TextField prefHeight="40.0" prefWidth="300.0" text="查询" HBox.hgrow="ALWAYS"/>
                         <Button fx:id="search" text="搜索"
                                 alignment="TOP_CENTER"
                                 onAction="#handleSearchButtonAction"
@@ -50,5 +54,7 @@
     <padding>
         <Insets top="10.0" />
     </padding>
+    <FlowPane fx:id="pane">
+    </FlowPane>
 </VBox>
 
