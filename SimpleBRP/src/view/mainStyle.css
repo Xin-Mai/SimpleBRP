@@ -5,7 +5,7 @@
 /**设置Label样式**/
 .label {
     -fx-font-size: 16px;
-    -fx-font-weight: bold;
+    -fx-font-weight: normal;
     -fx-text-fill: #333333;
     -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
 }
@@ -35,4 +35,11 @@
         -fx-border-radius: 10;
         -fx-background-color:#EAECEE;
  
+ }
+
+ /**自定义的标题加粗加大标红**/
+ .title{
+        -fx-font-size: 18px;
+        -fx-font-weight: bold;
+        -fx-text-fill: red;
  }

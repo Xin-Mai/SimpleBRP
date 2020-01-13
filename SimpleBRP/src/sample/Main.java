@@ -15,8 +15,8 @@ public class Main extends Application {
         primaryStage.setTitle("卖表专用系统XD");
         Scene scene = new Scene(root,1067,600);
         scene.getStylesheets().add(getClass().getResource("../view/mainStyle.css").toExternalForm());
-        DataDA da = new DataDA();
-        da.search("Russian");
+    //    DataDA da = new DataDA();
+     //   da.search("Russian");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
