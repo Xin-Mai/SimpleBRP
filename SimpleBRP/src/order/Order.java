@@ -24,6 +24,11 @@ public class Order {
     //收货国家
     private String country;
 
+    //佣金比例
+    final static float RATE =(float) 0.08;
+    //美元汇率
+    final static float DOLLARS_RATE = (float)6.9;
+
     public Order(String id)
     {
         this.id=id;
@@ -33,16 +38,16 @@ public class Order {
         this.goods=new ArrayList<>();
         this.logistics=new Logistics();
     }
-    public Order(String id,List<Goods> goods,Logistics logistics,String country)
+    public Order(String id,List<Goods> goods,float money,Logistics logistics,String country)
     {
         this.country=country;
         this.id=id;
         this.goods=goods;
+        this.money=money;
         this.logistics=logistics;
-        this.money=getMoney();
     }
 
-    public Order(String id,String orderDate,String payDate,List<Goods> goods,Logistics logistics,String country)
+    public Order(String id,String orderDate,String payDate,float money,List<Goods> goods,Logistics logistics,String country)
     {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         this.country=country;
@@ -51,12 +56,12 @@ public class Order {
         this.logistics=logistics;
         try{
             this.orderTime=format.parse(orderDate);
-            this.payTime=format.parse(orderDate);
+            this.payTime=format.parse(payDate);
         }catch (ParseException e)
         {
             e.printStackTrace();
         }
-        this.money=getMoney();
+        this.money=money;
     }
 
     //添加商品
@@ -100,10 +105,8 @@ public class Order {
         this.payTime = payTime;
     }
 
-    public float getMoney() {
-        money = 0;
-        for(Goods g:goods)
-            money+=g.getMoney();
+    public float getMoney()
+    {
         return money;
     }
 
@@ -147,5 +150,29 @@ public class Order {
         }
         sql=sql+"'"+country+"','"+logistics.getId()+"')";
         return sql;
+    }
+
+    /**获取成本*/
+    public float getCost()
+    {
+        float cost=0;
+        for(Goods g:goods)
+            cost+=g.getCost();
+        return cost;
+    }
+    /**获取利润*/
+    public float getProfit()
+    {
+        //售价减运费和8%的佣金
+        float profit=DOLLARS_RATE*(1-RATE)*money-logistics.getMoney();
+        //减成本
+        profit-=getCost();
+        return profit;
+    }
+
+    /**路润率*/
+    public float getProfitRate()
+    {
+        return getProfit()/(money*DOLLARS_RATE);
     }
 }

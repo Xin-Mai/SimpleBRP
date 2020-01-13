@@ -90,31 +90,94 @@ public class DataDA {
         return true;
     }
 
+    /**查看全部订单*/
+    public List<Order> search()
+    {
+        List<Order> orders = select(ORDER_TITLE[0],"*");
+        fillLogistics(orders);
+        for(Order o:orders)
+        {
+            List<Goods> g=o.getGoods();
+            setGoodsCost(g);
+            System.out.println(o.getSqlData());
+        }
+        return orders;
+    }
+
+    /**补充商品成本*/
+    public void setGoodsCost(List<Goods> g)
+    {
+        for(Goods good:g)
+        {
+            String id= good.getId();
+            if(id.equals("B-W-B"))
+            {
+                //9055成本70
+                good.setCost(good.getQuantity()*70);
+            }
+            else
+            {
+                try{
+                    String type = id.substring(0,id.indexOf('-'));
+                    id=id.substring(id.indexOf('-')+1);
+                    String color = id.substring(0,id.indexOf('-'));
+                    good.setCost(good.getQuantity()*search(type,color));
+                }catch (StringIndexOutOfBoundsException e)
+                {
+                    //找不到对应的就设55
+                    System.out.println(id);
+                    good.setCost(55);
+                }
+            }
+        }
+    }
     /**查询订单*/
     public List<Order> search(String content)
     {
-        String sql;
         List<Order> orders = new ArrayList<>();
         for(String title:ORDER_TITLE)
         {
             orders.addAll(select(title,content));
         }
-        for(Order o:orders)
-            System.out.println(o.getSqlData());
         fillLogistics(orders);
         for(Order o:orders)
+        {
+            List<Goods> g=o.getGoods();
+            setGoodsCost(g);
             System.out.println(o.getSqlData());
+        }
         if(orders.size()!=0)
             return orders;
         else
             return null;
     }
 
+    /**查询成本*/
+    public float search(String type,String color)
+    {
+        String sql="SELECT * FROM "+COST_TABLE+
+                " WHERE "+COST_TITLE[0]+"='"+type+"' AND "
+                +COST_TITLE[1]+"='"+color+"'";
+        try {
+            statement=getStatement();
+            ResultSet rs=statement.executeQuery(sql);
+            if(rs.next())
+                return rs.getFloat(COST_TITLE[2]);
+            statement.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     /**根据不同表头在订单表中查询，并根据物流单号从物流表中获取logistics对象*/
-    private List<Order> select(String row,String content)
+    public List<Order> select(String row,String content)
     {
         String sql="SELECT * FROM "+ORDER_TABLE+
                 " WHERE "+row+" LIKE '%"+content+"%'";
+        //查询全部信息
+        if(content.equals("*"))
+            sql="SELECT * FROM "+ORDER_TABLE;
         List<Order> orders = new ArrayList<>();
         try{
             statement = getStatement();
@@ -132,13 +195,13 @@ public class DataDA {
                 if(lid.contains("\n"))
                     lid=lid.substring(0,lid.indexOf('\n'));
                 Logistics logistics = new Logistics(lid);
-                String[] allgoods = goods.split(":");
+                String[] allgoods = goods.split(";");
                 List<Goods> gList = new ArrayList<>();
                 for(String g:allgoods)
                 {
                     gList.add(new Goods(g));
                 }
-                orders.add(new Order(id,orderTime,payTime,gList,logistics,country));
+                orders.add(new Order(id,orderTime,payTime,money,gList,logistics,country));
             }
             resultSet.close();
             statement.close();

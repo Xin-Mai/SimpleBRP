@@ -1,5 +1,7 @@
 package order;
 
+import dataDA.DataDA;
+
 public class Goods {
     //编码
     private String id;
