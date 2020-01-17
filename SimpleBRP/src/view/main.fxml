@@ -8,7 +8,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
-<VBox fx:controller="sample.Controller"
+<VBox fx:controller="controller.MainController"
       maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1067.0" spacing="10.0" stylesheets="@mainStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <HBox maxHeight="60.0" prefHeight="60.0" prefWidth="1067.0" spacing="10.0" styleClass="bg" VBox.vgrow="NEVER">
@@ -31,7 +31,7 @@
                 </Button>
                 <HBox maxHeight="60.0" prefHeight="60.0" prefWidth="400.0" spacing="10.0" styleClass="bg" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                     <children>
-                        <TextField prefHeight="40.0" prefWidth="300.0" promptText="查询" HBox.hgrow="ALWAYS"/>
+                        <TextField fx:id="search_content" prefHeight="40.0" prefWidth="300.0" promptText="查询" HBox.hgrow="ALWAYS"/>
                         <Button fx:id="search" text="搜索"
                                 alignment="TOP_CENTER"
                                 onAction="#handleSearchButtonAction"
@@ -54,7 +54,12 @@
     <padding>
         <Insets top="10.0" />
     </padding>
-    <FlowPane fx:id="pane">
-    </FlowPane>
+    <HBox maxHeight="700.0" maxWidth="Infinity" prefHeight="400.0" prefWidth="1067.0" spacing="10.0" styleClass="bg"  VBox.vgrow="ALWAYS">
+        <children>
+            <FlowPane fx:id="pane" prefWidth="1067" maxHeight="700" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                <fx:include maxHeight="700.0" prefHeight="600.0" maxWidth="Infinity" prefWidth="1067.0" fx:id="page" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" source="list.fxml" visible="false"/>
+            </FlowPane>
+        </children>
+    </HBox>
 </VBox>
 

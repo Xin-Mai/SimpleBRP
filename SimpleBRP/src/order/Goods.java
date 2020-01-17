@@ -16,9 +16,15 @@ public class Goods {
     public Goods(String id)
     {
         this.id=id;
-        int i=id.lastIndexOf(' ');
+        int i=id.lastIndexOf(" ");
         String s=id.substring(i+1);
-        quantity=Integer.parseInt(s);
+        try{
+            quantity=Integer.parseInt(s);
+        }catch (Exception e)
+        {
+            System.out.println(id);
+        }
+
         this.cost=0;
         //在初始化时就应该用Id获取相关的成本和价格
         //用map

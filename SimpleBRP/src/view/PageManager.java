@@ -1,12 +1,16 @@
 package view;
 
+import dataDA.DataDA;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.Pagination;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -17,6 +21,7 @@ import order.Goods;
 import order.Order;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javafx.geometry.Pos.CENTER;
@@ -26,7 +31,9 @@ public class PageManager {
     private Pagination pagination;
     static final String[] TITLES = {"订单号","订单金额","型号","成本","利润","利润率","收货国家","物流方式"};
     private List<Order> orders;
-    private VBox parent;
+    @FXML
+    private VBox pageLoader;
+    private List<String[]> content;
 
     /**每页10条信息*/
     public int itemPerPage()
@@ -39,72 +46,53 @@ public class PageManager {
     {
         this.orders=o;
     }
-    public PageManager(List<Order> o,VBox parent){this.orders=o;this.parent=parent;}
+    public PageManager(List<Order> o,VBox parent){this.orders=o;this.pageLoader=parent;}
 
     /**用于回调的Page Factory方法*/
-    public VBox createPage(int pageIndex){
-        //从fxml映射获取页面布局？
-        VBox box = parent;
-        //上下相距5个像素？
-        //VBox box = new VBox(10);
-        //初始化表头
-        box.getChildren().add(getTitle());
+    public VBox createPage(int pageIndex) {
+        if(!pageLoader.isVisible())
+            pageLoader.setVisible(true);
+        pageLoader.setPrefSize(1067,500);
+        int i;
         int page = pageIndex*itemPerPage();
-        for(int i=page;i<=page+itemPerPage()&&i<orders.size();i++)
+        //每3页加载一次
+        if(pageIndex%3==0)
+            content=preLoad(page);
+        for(i=0;i<itemPerPage()&&(page+i<orders.size());i++)
         {
-            HBox item = new HBox();
-            item.setSpacing(20);
-            Order order = orders.get(i);
+            HBox item = (HBox)pageLoader.getChildren().get(i+1);
+            String[] strings = content.get((page+i)%30);
+            List<Node> nodes=item.getChildren();
             //订单号使用超链接
-            Hyperlink id = new Hyperlink();
-            id.setText(order.getId());
-            id.setOnAction((ActionEvent e)->{
-                /**打开详情页面*/
-            });
+            Hyperlink id = (Hyperlink)nodes.get(0);
+            id.setText(strings[0]);
             //订单金额（美元）
-            Label money = new Label("$"+order.getMoney());
+            Label money = (Label)nodes.get(1);
+            money.setText(strings[1]);
             //商品编码
             //超过一件商品只显示其中两件
-            VBox goodsBox = new VBox();
-            if(order.getGoods().size()>1)
-            {
-                String s=order.getGoods().get(0).getId();
-               Label l = new Label(lengthFormat(s,18));
-               s=order.getGoods().get(1).getId();
-               Label l2 =new Label(lengthFormat(s,18));
-               Label l3 = new Label("...");
-               l.setStyle(" -fx-text-fill: blue;-fx-font-size: 13px;");
-               l2.setStyle(" -fx-text-fill: blue; -fx-font-size: 13px;");
-               l3.setStyle(" -fx-text-fill: blue;-fx-font-size: 13px;");
-               goodsBox.getChildren().addAll(l,l2,l3);
-            }
-            Label goods = new Label();
-            String s=order.getGoods().get(0).getId();
-            goods.setText(lengthFormat(s,18));
-            goods.setStyle(" -fx-text-fill: blue;-fx-font-size: 13px;");
+            Label goods = (Label)nodes.get(2);
+            goods.setText(strings[2]);
+            goods.setStyle(" -fx-text-fill: blue;-fx-font-size: 12px;");
             //成本
-            Label cost = new Label(""+order.getCost());
+            Label cost =(Label) nodes.get(3);
+            cost.setText(strings[3]);
             //利润
-            String p=order.getProfit()+"";
-            p=p.substring(0,p.indexOf(".")+3);
-            Label profit = new Label(p);
+            Label profit = (Label)nodes.get(4);
+            profit.setText(strings[4]);
             //利润率
-            p=order.getProfitRate()+"";
-            p=p.substring(0,p.indexOf(".")+3);
-            Label profitRate = new Label(p+"%");
+            Label profitRate = (Label)nodes.get(5);
+            profitRate.setText(strings[5]);
             //收货国家
-            Label country = new Label(lengthFormat(order.getCountry(),20));
+            Label country = (Label)nodes.get(6);
+            country.setText(strings[6]);
             //物流方式
-            Label server = new Label(order.getLogistics().getServer());
-            if(order.getGoods().size()==1)
-                item.getChildren().addAll(id,money,goods,cost,profit,profitRate,country,server);
-            else
-                item.getChildren().addAll(id,money,goodsBox,cost,profit,profitRate,country,server);
-            box.getChildren().add(item);
+            Label server = (Label)nodes.get(7);
+            server.setText(strings[7]);
         }
-        box.setPadding(new Insets(10,10,30,10));
-        box.setAlignment(CENTER);
-        return box;
+        if(i<itemPerPage())
+            clearBox(itemPerPage()-i);
+        return pageLoader;
     }
 
     /**贵定各项内容长度，规范化*/
@@ -115,21 +103,69 @@ public class PageManager {
             s1+="  ";
         return s1;
     }
-    /**获取抬头*/
-    private HBox getTitle()
+    /**清空内容*/
+    private void clearBox()
     {
-        HBox box = new HBox(60);
-        box.setPrefHeight(20);
-        box.prefWidth(1067);
-        box.maxHeight(20);
-        box.setAlignment(CENTER);
-        for(String s:TITLES)
+        for(int i=1;i<=10;i++)
         {
-            Label l = new Label(s);
-            l.setTextAlignment(TextAlignment.CENTER);
-            l.setStyle(" -fx-text-weight: bold;-fx-font-size: 18px;-fx-text-fill: red;");
-            box.getChildren().add(l);
+            HBox item =(HBox) pageLoader.getChildren().get(i);
+            for(Node n:item.getChildren())
+            {
+                if(n instanceof Label||n instanceof Hyperlink)
+                    ((Labeled) n).setText("");
+            }
         }
-        return box;
+    }
+    private void clearBox(int j)
+    {
+        for(int i=j;i<=10;i++)
+        {
+            HBox item =(HBox) pageLoader.getChildren().get(i);
+            for(Node n:item.getChildren())
+            {
+                if(n instanceof Label||n instanceof Hyperlink)
+                    ((Labeled) n).setText("");
+            }
+        }
+    }
+
+    /**预加载3页*/
+    private List<String[]> preLoad(int page)
+    {
+        List<String[]> content = new ArrayList<>();
+        for(int i=page;i<page+30&&i<orders.size();i++)
+        {
+            Order o=orders.get(i);
+            String[] strings = new String[8];
+            //单号
+            strings[0]=o.getId();
+            //价格
+            strings[1]="$"+o.getMoney();
+            //商品编码
+            String s=o.getGoods().get(0).getId();
+            if(o.getGoods().size()>=2)
+                s+='\n'+o.getGoods().get(1).getId()+"...";
+            strings[2]=s;
+            //成本
+            strings[3]=o.getCost()+"";
+            //利润
+            s=o.getProfit()+"";
+            s=s.substring(0,s.indexOf(".")+3);
+            strings[4]=s;
+            //利润率
+            s=o.getProfitRate()*100+"";
+            s=s.substring(0,s.indexOf(".")+3)+"%";
+            strings[5]=s;
+            //收货国家
+            strings[6]=lengthFormat(o.getCountry(),0);
+            //物流方式
+            strings[7]=o.getLogistics().getServer();
+            content.add(strings);
+        }
+        return content;
+    }
+
+    /**查看详情*/
+    public void handleOrderDetailAction(ActionEvent actionEvent) {
     }
 }

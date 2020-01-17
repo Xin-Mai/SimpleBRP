@@ -109,26 +109,18 @@ public class DataDA {
     {
         for(Goods good:g)
         {
-            String id= good.getId();
-            if(id.equals("B-W-B"))
-            {
-                //9055成本70
-                good.setCost(good.getQuantity()*70);
-            }
-            else
-            {
+            String id=good.getId();
                 try{
-                    String type = id.substring(0,id.indexOf('-'));
-                    id=id.substring(id.indexOf('-')+1);
-                    String color = id.substring(0,id.indexOf('-'));
-                    good.setCost(good.getQuantity()*search(type,color));
+                    String[] type = id.split(" ");
+                    /*id=id.substring(id.indexOf('-')+1);
+                    String color = id.substring(0,id.indexOf('-'));*/
+                    good.setCost(good.getQuantity()*searchCost(type[0]));
                 }catch (StringIndexOutOfBoundsException e)
                 {
                     //找不到对应的就设55
                     System.out.println(id);
                     good.setCost(55);
                 }
-            }
         }
     }
     /**查询订单*/
@@ -153,16 +145,17 @@ public class DataDA {
     }
 
     /**查询成本*/
-    public float search(String type,String color)
+    public float searchCost(String color)
     {
         String sql="SELECT * FROM "+COST_TABLE+
-                " WHERE "+COST_TITLE[0]+"='"+type+"' AND "
-                +COST_TITLE[1]+"='"+color+"'";
+                " WHERE "+COST_TITLE[1]+" LIKE '%"+color+"%'";
         try {
             statement=getStatement();
             ResultSet rs=statement.executeQuery(sql);
             if(rs.next())
+            {
                 return rs.getFloat(COST_TITLE[2]);
+            }
             statement.close();
         }catch (SQLException e){
             e.printStackTrace();
@@ -258,6 +251,15 @@ public class DataDA {
             statement.close();
         }catch (SQLException e)
         {
+            e.printStackTrace();
+        }
+    }
+
+    public void close(){
+        try {
+            connection.close();
+            statement.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
