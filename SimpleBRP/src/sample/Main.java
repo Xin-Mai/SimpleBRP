@@ -17,7 +17,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../view/main.fxml"));
-        DataDA dataDA = new DataDA();
         primaryStage.setTitle("卖表专用系统XD");
         Scene scene = new Scene(root,1067,600);
         scene.getStylesheets().add(getClass().getResource("../view/mainStyle.css").toExternalForm());

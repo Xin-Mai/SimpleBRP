@@ -6,9 +6,82 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.DataControllor"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.geometry.Insets?>
+<VBox  stylesheets="@mainStyle.css" fx:controller="controller.DataController" fx:id="dataBox" maxWidth="Infinity" maxHeight="Infinity" HBox.hgrow="ALWAYS" prefHeight="500" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+    <children>
+        <HBox fx:id="box1" maxHeight="80.0" maxWidth="Infinity" prefHeight="80.0" prefWidth="1067.0" spacing="30.0" styleClass="bg"
+              VBox.vgrow="NEVER" HBox.hgrow="ALWAYS">
+            <children>
+                <HBox HBox.hgrow="ALWAYS" stylesheets="@mainStyle.css" prefWidth="300" prefHeight="80" maxHeight="80" maxWidth="Infinity" spacing="10">
+                    <Label  text="国家：" graphicTextGap="8.0" HBox.hgrow="ALWAYS" prefHeight="40.0" alignment="TOP_CENTER" prefWidth="100.0" textAlignment="JUSTIFY">
+                    </Label>
+                    <ComboBox  fx:id="country" editable="true" promptText="国家名（英文）" HBox.hgrow="ALWAYS">
+                        <items>
 
-</AnchorPane>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <HBox HBox.hgrow="ALWAYS" stylesheets="@mainStyle.css" prefWidth="300" prefHeight="80" maxHeight="80" maxWidth="Infinity" spacing="10">
+                    <Label alignment="TOP_CENTER" text="商品编号：" graphicTextGap="8.0" HBox.hgrow="ALWAYS" prefHeight="40.0" prefWidth="100.0" textAlignment="JUSTIFY">
+                    </Label>
+                    <ComboBox fx:id="goodsType" editable="true" promptText="商品编号" HBox.hgrow="ALWAYS">
+                        <items>
+
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <HBox HBox.hgrow="ALWAYS" stylesheets="@mainStyle.css" prefWidth="300" prefHeight="80" maxHeight="80" maxWidth="Infinity" spacing="10">
+                    <Label alignment="TOP_CENTER" text="物流：" graphicTextGap="8.0" HBox.hgrow="ALWAYS" prefHeight="40.0" prefWidth="100.0" textAlignment="JUSTIFY">
+                    </Label>
+                    <ComboBox fx:id="server" editable="true" promptText="物流方式" HBox.hgrow="ALWAYS">
+                        <items>
+
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <Button fx:id="dataSearch" text="搜 索" prefHeight="40" prefWidth="100" alignment="TOP_CENTER" styleClass="search" onAction="#handleSearchDataAction"/>
+            </children>
+        </HBox>
+        <HBox fx:id="box2" maxHeight="Infinity" maxWidth="Infinity" prefWidth="1067.0" spacing="60" >
+            <children>
+                <VBox spacing="30" prefWidth="300" HBox.hgrow="ALWAYS" styleClass="card">
+                    <children>
+                        <Label text="总单数："></Label>
+                        <Label text="总金额："></Label>
+                        <Label text="总利润："></Label>
+                    </children>
+                <padding>
+                    <Insets bottom="10.0" left="40.0" right="40.0" top="20.0" />
+                </padding>
+                </VBox>
+                <VBox spacing="30" prefWidth="300" HBox.hgrow="ALWAYS" styleClass="card">
+                    <children>
+                        <Label text="平均利润率："></Label>
+                        <Label text="平均每单运费："></Label>
+                        <Label text="平均每单利润："></Label>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+                    </padding>
+                </VBox>
+                <VBox spacing="30" HBox.hgrow="ALWAYS" prefWidth="300" styleClass="card">
+                    <children>
+                        <Label text="最受欢迎款式" styleClass="title"></Label>
+                        <Label text="① "></Label>
+                        <Label text="② "></Label>
+                        <Label text="③ "></Label>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </VBox>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+            </padding>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>

@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.LoadException;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Pagination;
@@ -21,18 +22,18 @@ import java.util.List;
 
 public class MainController {
     //alt+enter即可把组件映射到这里
-    public FlowPane pane;
+    public HBox pane;
     public Button search;
     public TextField search_content;
     public VBox page;
+    private VBox data;
     private Pagination pagination;
 
 
     //查看全部订单
     public void handleCheckButtonAction(ActionEvent actionEvent) {
-        pane.getChildren().removeAll();
+        pane.getChildren().remove(data);
         DataDA dataDA = new DataDA();
-        HBox title =(HBox) page.getChildren().get(0);
         List<Order> orders=dataDA.search();
         PageManager manager = new PageManager(orders,page);
         if(pagination==null)
@@ -58,7 +59,7 @@ public class MainController {
 
     //搜索订单
     public void handleSearchButtonAction(ActionEvent actionEvent) {
-        pane.getChildren().removeAll();
+        pane.getChildren().remove(data);
         String content = search_content.getText();
         DataDA dataDA = new DataDA();
         List<Order> orders=dataDA.search(content);
@@ -78,5 +79,16 @@ public class MainController {
 
     //查看不同的统计数据
     public void handleDataButtonAction(ActionEvent actionEvent) {
+        if(pagination!=null)
+            pane.getChildren().removeAll(pagination,page);
+        else
+            pane.getChildren().remove(page);
+        DataController controller = new DataController(this);
+        data=controller.getDataBox();
+        pane.getChildren().add(data);
+    }
+
+    public HBox getPane() {
+        return pane;
     }
 }

@@ -123,6 +123,28 @@ public class DataDA {
                 }
         }
     }
+    /**直接给url查*/
+    public List<Order> search(String country,String good,String server)
+    {
+        String url ="SELECT * FROM "+ORDER_TABLE+" WHERE "+ORDER_TITLE[5]+"='"+country+"' AND "
+                +ORDER_TITLE[4]+" LIKE '%"+good+"%'";
+        List<Order> orders = new ArrayList<>();
+        orders.addAll(select(url));
+        fillLogistics(orders);
+        //使用迭代器避免遍历集合时报错
+        Iterator<Order> iterator = orders.iterator();
+        while(iterator.hasNext())
+        {
+            Order o=iterator.next();
+            if(!o.getLogistics().getServer().equals(server))
+                iterator.remove();
+        }
+        if(orders.size()!=0)
+            return orders;
+        else
+            return null;
+    }
+
     /**查询订单*/
     public List<Order> search(String content)
     {
@@ -171,6 +193,43 @@ public class DataDA {
         //查询全部信息
         if(content.equals("*"))
             sql="SELECT * FROM "+ORDER_TABLE;
+        List<Order> orders = new ArrayList<>();
+        try{
+            statement = getStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while(resultSet.next())
+            {
+                String id = resultSet.getString(ORDER_TITLE[0]);
+                String orderTime = resultSet.getString(ORDER_TITLE[1]);
+                String payTime = resultSet.getString(ORDER_TITLE[2]);
+                Float money = resultSet.getFloat(ORDER_TITLE[3]);
+                String goods = resultSet.getString(ORDER_TITLE[4]);
+                String country= resultSet.getString(ORDER_TITLE[5]);
+                String lid=resultSet.getString(ORDER_TITLE[6]);
+                lid=lid.substring(lid.indexOf(":")+1);
+                if(lid.contains("\n"))
+                    lid=lid.substring(0,lid.indexOf('\n'));
+                Logistics logistics = new Logistics(lid);
+                String[] allgoods = goods.split(";");
+                List<Goods> gList = new ArrayList<>();
+                for(String g:allgoods)
+                {
+                    gList.add(new Goods(g));
+                }
+                orders.add(new Order(id,orderTime,payTime,money,gList,logistics,country));
+            }
+            resultSet.close();
+            statement.close();
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
+    /**根提供url直接查*/
+    public List<Order> select(String sql)
+    {
         List<Order> orders = new ArrayList<>();
         try{
             statement = getStatement();
