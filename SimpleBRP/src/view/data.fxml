@@ -12,7 +12,7 @@
         <HBox fx:id="box1" maxHeight="80.0" maxWidth="Infinity" prefHeight="80.0" prefWidth="1067.0" spacing="30.0" styleClass="bg"
               VBox.vgrow="NEVER" HBox.hgrow="ALWAYS">
             <children>
-                <HBox HBox.hgrow="ALWAYS" stylesheets="@mainStyle.css" prefWidth="300" prefHeight="80" maxHeight="80" maxWidth="Infinity" spacing="10">
+                <HBox HBox.hgrow="ALWAYS" stylesheets="@mainStyle.css" prefWidth="350" prefHeight="80" maxHeight="80" maxWidth="Infinity" spacing="10">
                     <Label  text="国家：" graphicTextGap="8.0" HBox.hgrow="ALWAYS" prefHeight="40.0" alignment="TOP_CENTER" prefWidth="100.0" textAlignment="JUSTIFY">
                     </Label>
                     <ComboBox  fx:id="country" editable="true" promptText="国家名（英文）" HBox.hgrow="ALWAYS">

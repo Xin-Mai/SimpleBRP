@@ -5,8 +5,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import order.Order;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class DataController {
     static final String LOGISTICS_TABLE = "物流";
     static final String COST_TABLE = "成本";
 
-    final static String[] countryList = {"阿富汗  Afghanistan", "奥兰群岛  Aland Islands", "阿尔巴尼亚  Albania","阿尔及利亚  Algeria","美属萨摩亚  American Samoa","安道尔  Andorra","安哥拉  Angola","安圭拉  Anguilla","安提瓜和巴布达  Antigua and Barbuda","阿根廷  Argentina","亚美尼亚  Armenia","阿鲁巴  Aruba","澳大利亚  Australia","奥地利  Austria","阿塞拜疆  Azerbaijan","孟加拉  Bangladesh","巴林  Bahrain","巴哈马  Bahamas", "巴巴多斯  Barbados", "白俄罗斯  Belarus", "比利时  Belgium", "伯利兹  Belize", "贝宁  Benin", "百慕大  Bermuda", "不丹  Bhutan", "玻利维亚  Bolivia", "波斯尼亚和黑塞哥维那  Bosnia and Herzegovina", "博茨瓦纳  Botswana","布维岛  Bouvet Island"
+    final static String[] countryList = {"全部","阿富汗  Afghanistan", "奥兰群岛  Aland Islands", "阿尔巴尼亚  Albania","阿尔及利亚  Algeria","美属萨摩亚  American Samoa","安道尔  Andorra","安哥拉  Angola","安圭拉  Anguilla","安提瓜和巴布达  Antigua and Barbuda","阿根廷  Argentina","亚美尼亚  Armenia","阿鲁巴  Aruba","澳大利亚  Australia","奥地利  Austria","阿塞拜疆  Azerbaijan","孟加拉  Bangladesh","巴林  Bahrain","巴哈马  Bahamas", "巴巴多斯  Barbados", "白俄罗斯  Belarus", "比利时  Belgium", "伯利兹  Belize", "贝宁  Benin", "百慕大  Bermuda", "不丹  Bhutan", "玻利维亚  Bolivia", "波斯尼亚和黑塞哥维那  Bosnia and Herzegovina", "博茨瓦纳  Botswana","布维岛  Bouvet Island"
             ,"巴西  Brazil","文莱  Brunei","保加利亚  Bulgaria","布基纳法索  Burkina Faso","布隆迪  Burundi","柬埔寨  Cambodia","喀麦隆  Cameroon","加拿大  Canada","佛得角  Cape Verde","中非  Central African Republic","乍得  Chad","智利  Chile","圣诞岛  Christmas Islands","科科斯（基林）群岛  Cocos (keeling) Islands","哥伦比亚  Colombia","科摩罗  Comoros","刚果（金）  Congo (Congo-Kinshasa)","刚果  Congo"
             ,"库克群岛  Cook Islands","哥斯达黎加  Costa Rica","科特迪瓦  Cote D’Ivoire","中国  China","克罗地亚  Croatia","古巴  Cuba","捷克  Czech","塞浦路斯  Cyprus","丹麦  Denmark"
             ,"吉布提  Djibouti","多米尼加  Dominica","东帝汶  Timor-Leste","厄瓜多尔  Ecuador","埃及  Egypt","赤道几内亚  Equatorial Guinea","厄立特里亚  Eritrea","爱沙尼亚  Estonia","埃塞俄比亚  Ethiopia","法罗群岛  Faroe Islands","斐济  Fiji","Finland  Finland","法国  France","法国大都会  Franch Metropolitan","法属圭亚那  Franch Guiana","法属波利尼西亚  French Polynesia","加蓬  Gabon","冈比亚  Gambia","格鲁吉亚  Georgia"
@@ -48,7 +50,7 @@ public class DataController {
             "土耳其  Turkey","土库曼斯坦  Turkmenistan","图瓦卢  Tuvalu","乌干达  Uganda","乌克兰  Ukraine","阿拉伯联合酋长国  United Arab Emirates","英国  United Kingdom","美国  United States","乌拉圭  Uruguay","乌兹别克斯坦  Uzbekistan","瓦努阿图  Vanuatu","梵蒂冈  Vatican City","委内瑞拉  Venezuela","越南  Vietnam","瓦利斯群岛和富图纳群岛  Wallis and Futuna","西撒哈拉  Western Sahara","也门  Yemen","南斯拉夫  Yugoslavia","赞比亚  Zambia","津巴布韦  Zimbabwe"
     };
     private List<String> goodsId=new ArrayList<>();
-    final static String[] logServer = {"菜鸟特货专线-标准","AliExpress 无忧物流-标准","4PX新邮挂号小包"};
+    final static String[] logServer = {"全部","菜鸟特货专线-标准","AliExpress 无忧物流-标准","4PX新邮挂号小包"};
     @FXML
     private void initialize() {
     }
@@ -62,6 +64,7 @@ public class DataController {
         try{
             dataBox=loader.load();
             box1=(HBox)dataBox.getChildren().get(0);
+            box2=(HBox)dataBox.getChildren().get(1);
             HBox box11=(HBox)box1.getChildren().get(0);
             country=(ComboBox)box11.getChildren().get(1);
             country.getItems().addAll(countryList);
@@ -70,6 +73,7 @@ public class DataController {
             HBox box13 = (HBox)box1.getChildren().get(2);
             server=(ComboBox)box13.getChildren().get(1);
             server.getItems().addAll(logServer);
+            goodsType.getItems().add("全部");
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -78,11 +82,59 @@ public class DataController {
     public void handleSearchDataAction(ActionEvent actionEvent) {
         DataDA da=new DataDA();
         String coun =country.getSelectionModel().getSelectedItem().toString();
+        if(coun.contains("  "))
+            coun=coun.substring(coun.indexOf(" ")+2);
         String goods = goodsType.getSelectionModel().getSelectedItem().toString();
         String logic = server.getSelectionModel().getSelectedItem().toString();
-        String sql = "SELECT ";
+        List<Order> orders = da.search(coun,goods,logic);
+        setData(orders);
 
+    }
 
+    private void setData(List<Order> orders)
+    {
+        float totalProfit=0;
+        float totalMoney=0;
+        float toatlProfitRate=0;
+        float totalLFee=0;
+        VBox box21=(VBox)box2.getChildren().get(0);
+        VBox box22=(VBox)box2.getChildren().get(1);
+        VBox box23 =(VBox)box2.getChildren().get(2);
+        for(Order o:orders)
+        {
+            totalMoney+=o.getMoney();
+            toatlProfitRate+=o.getProfitRate();
+            totalProfit+=o.getProfit();
+            totalLFee+=o.getLogistics().getMoney();
+        }
+        //总单数，总金额，总利润
+        Label num=(Label)box21.getChildren().get(0);
+        num.setText("总单数："+orders.size());
+        Label money=(Label)box21.getChildren().get(1);
+        String t=""+totalMoney;
+        if(t.length()>5)
+            t=t.substring(0,6);
+        money.setText("总金额：$"+t);
+        Label profit=(Label)box21.getChildren().get(2);
+        t=""+totalProfit;
+        if(t.length()>5)
+            t=t.substring(0,5);
+        profit.setText("总利润："+t);
+        //利润率,平均运费，平均利润
+        Label rate=(Label)box22.getChildren().get(0);
+        String r=100*toatlProfitRate/orders.size()+"";
+        r=r.substring(0,r.indexOf(".")+3);
+        rate.setText("平均每单利润率："+r+"%");
+        Label fee=(Label)box22.getChildren().get(1);
+        r=totalLFee/orders.size()+"";
+        if(r.length()>5)
+            r=r.substring(0,5);
+        fee.setText("平均每单运费："+r);
+        Label pro=(Label)box22.getChildren().get(2);
+        r=""+totalProfit/orders.size();
+        if(r.length()>5)
+            r=r.substring(0,5);
+        pro.setText("平均每单利润："+r);
     }
 
     public VBox getDataBox() {

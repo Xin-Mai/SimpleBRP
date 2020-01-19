@@ -126,18 +126,27 @@ public class DataDA {
     /**直接给url查*/
     public List<Order> search(String country,String good,String server)
     {
-        String url ="SELECT * FROM "+ORDER_TABLE+" WHERE "+ORDER_TITLE[5]+"='"+country+"' AND "
-                +ORDER_TITLE[4]+" LIKE '%"+good+"%'";
+        String url ="SELECT * FROM "+ORDER_TABLE+" WHERE ";
+        if(!country.equals("全部"))
+            url+=ORDER_TITLE[5]+" LIKE '%"+country+"%'";
+        if(!good.equals("全部"))
+        {
+            if(country.isEmpty())
+                url+=ORDER_TITLE[4]+" LIKE '%"+good+"%'";
+            else
+                url+=" AND"+ORDER_TITLE[4]+" LIKE '%"+good+"%'";
+        }
         List<Order> orders = new ArrayList<>();
         orders.addAll(select(url));
         fillLogistics(orders);
-        //使用迭代器避免遍历集合时报错
-        Iterator<Order> iterator = orders.iterator();
-        while(iterator.hasNext())
-        {
-            Order o=iterator.next();
-            if(!o.getLogistics().getServer().equals(server))
-                iterator.remove();
+        if(!server.equals("全部")) {
+            //使用迭代器避免遍历集合时报错
+            Iterator<Order> iterator = orders.iterator();
+            while (iterator.hasNext()) {
+                Order o = iterator.next();
+                if (!o.getLogistics().getServer().equals(server))
+                    iterator.remove();
+            }
         }
         if(orders.size()!=0)
             return orders;
