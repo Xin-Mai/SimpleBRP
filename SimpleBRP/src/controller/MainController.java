@@ -8,12 +8,12 @@ import javafx.fxml.LoadException;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 import order.Order;
 import view.PageManager;
 
@@ -55,6 +55,22 @@ public class MainController {
 
     //新建订单
     public void handleAddButtonAction(ActionEvent actionEvent) {
+        AddNewController controller = new AddNewController(this);
+        Dialog<Order> dialog = new Dialog<>();
+        dialog.setTitle("添加新的订单");
+        GridPane gridPane=controller.getPane();
+        dialog.getDialogPane().setContent(gridPane);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK,ButtonType.CANCEL);
+        dialog.setResultConverter(button->{
+            if(button==ButtonType.OK)
+            {
+                TextField t=(TextField)gridPane.lookup("#orderId");
+                return new Order(t.getText());
+            }
+            else
+                return null;
+        });
+        dialog.show();
     }
 
     //搜索订单

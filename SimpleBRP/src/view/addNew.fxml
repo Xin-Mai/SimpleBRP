@@ -6,9 +6,50 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.AddNewController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<GridPane xmlns="http://javafx.com/javafx" hgap="8" vgap="8"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="controller.AddNewController"
+          prefHeight="400.0" prefWidth="400.0" alignment="CENTER">
 
-</AnchorPane>
+    <children>
+        <Label alignment="CENTER" text="订单号：" GridPane.columnIndex="0"  GridPane.rowIndex="0"/>
+        <TextField  fx:id="orderId" promptText="输入订单号" prefColumnCount="100" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Label text="订单金额:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="money" GridPane.rowIndex="1" GridPane.columnIndex="1" prefColumnCount="40"/>
+        <Label text="下单时间：" prefWidth="160" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="time1"  promptText="请按2020-1-1 12:00格式输入" GridPane.rowIndex="2" GridPane.columnIndex="1" prefColumnCount="160"/>
+        <Label text="付款时间：" prefWidth="160"  GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField  fx:id="time2" promptText="请按2020-1-1 12:00格式输入" GridPane.rowIndex="3" GridPane.columnIndex="1" prefColumnCount="160"/>
+        <Label text="商品编码：" prefWidth="160" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <TextField fx:id="goodsId" promptText="多件商品请用“；”分隔" GridPane.rowIndex="4" GridPane.columnIndex="1" prefColumnCount="160"/>
+        <Label text="收货国家：" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <TextField fx:id="country" promptText="请输入英文" GridPane.rowIndex="5" GridPane.columnIndex="1" prefColumnCount="160"/>
+        <Label text="物流服务：" prefWidth="160" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <ComboBox fx:id="logServer"  GridPane.rowIndex="6" GridPane.columnIndex="1">
+            <items>
+                <FXCollections fx:factory ="observableArrayList">
+                    <String fx:value="菜鸟特货专线-标准"/>
+                    <String fx:value="AliExpress 无忧物流-标准"/>
+                    <String fx:value="4PX新邮挂号小包"/>
+
+                </FXCollections>
+            </items>
+        </ComboBox>
+        <Label text="物流单号：" prefWidth="160" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+        <TextField fx:id="logId" promptText="请输入实际快递单号" GridPane.rowIndex="7" GridPane.columnIndex="1" prefColumnCount="160"/>
+        <Label text="订单重量：" prefWidth="160" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+        <TextField fx:id="weight" promptText="请输入重量" GridPane.rowIndex="8" GridPane.columnIndex="1" prefColumnCount="60"/>
+        <Label text="物流金额：" prefWidth="160" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+        <TextField fx:id="logFee" promptText="请输入物流费用" GridPane.rowIndex="9" GridPane.columnIndex="1" prefColumnCount="160"/>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" minWidth="60.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0"/>
+    </columnConstraints>
+    <padding>
+        <Insets bottom="10.0" left="50.0" right="50.0" top="20.0" />
+    </padding>
+
+</GridPane>
