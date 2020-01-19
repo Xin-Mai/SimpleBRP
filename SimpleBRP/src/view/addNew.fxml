@@ -45,7 +45,7 @@
         <TextField fx:id="logFee" promptText="请输入物流费用" GridPane.rowIndex="9" GridPane.columnIndex="1" prefColumnCount="160"/>
     </children>
     <columnConstraints>
-        <ColumnConstraints hgrow="NEVER" minWidth="60.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="NEVER" minWidth="60.0" prefWidth="80.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0"/>
     </columnConstraints>
     <padding>
