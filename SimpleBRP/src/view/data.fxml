@@ -64,12 +64,12 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                     </padding>
                 </VBox>
-                <VBox spacing="30" HBox.hgrow="ALWAYS" prefWidth="300" styleClass="card">
+                <VBox fx:id="hotSale" spacing="20" HBox.hgrow="ALWAYS" prefWidth="300" styleClass="card">
                     <children>
-                        <Label text="最受欢迎款式" styleClass="title"></Label>
-                        <Label text="① "></Label>
-                        <Label text="② "></Label>
-                        <Label text="③ "></Label>
+                        <Label alignment="TOP_CENTER" prefWidth="300" text="热销国家" styleClass="title"></Label>
+                        <Label prefHeight="50" prefWidth="300" textFill="#803d41" styleClass="mlabel"></Label>
+                        <Label text="② " prefHeight="50" prefWidth="300" textFill="#803d41" styleClass="mlabel"></Label>
+                        <Label text="③ " prefHeight="50" prefWidth="300" textFill="#803d41" styleClass="mlabel"></Label>
                     </children>
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

@@ -17,11 +17,7 @@
                         onAction="#handleCheckButtonAction"
                         maxWidth="Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0"  HBox.hgrow="ALWAYS">
                 </Button>
-                <Button fx:id="manage" text="订单管理"
-                        onAction="#handleManageButtonAction"
-                        maxWidth="Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0"  HBox.hgrow="ALWAYS">
-                </Button>
-                <Button fx:id="add" text="新建订单"
+                <Button fx:id="add" text="添加订单"
                         onAction="#handleAddButtonAction"
                         maxWidth="Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0"  HBox.hgrow="ALWAYS">
                 </Button>

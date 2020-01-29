@@ -322,6 +322,30 @@ public class DataDA {
             e.printStackTrace();
         }
     }
+    /**单个搜详情时用*/
+    public void fillLogistics(Order o)
+    {
+        String sql = "SELECT * FROM "+ LOGISTICS_TABLE+
+                " WHERE "+LOGISTICS_TITLE[0]+" LIKE '%";
+        Logistics logistics = o.getLogistics();
+        try{
+            statement=getStatement();
+            String id=logistics.getId();
+            ResultSet rs = statement.executeQuery(sql+id+"%'");
+                //刷单的没有真正的物流单号
+            if(rs.next())
+            {
+                //生成logistics对象并且补全order
+                logistics.setServer(rs.getString(LOGISTICS_TITLE[1]));
+                logistics.setWeight(rs.getFloat(LOGISTICS_TITLE[2]));
+                logistics.setMoney(rs.getFloat(LOGISTICS_TITLE[3]));
+            }
+            rs.close();
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     public void close(){
         try {

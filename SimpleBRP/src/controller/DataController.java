@@ -8,13 +8,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 import order.Order;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class DataController {
     @FXML
@@ -50,7 +48,7 @@ public class DataController {
             "土耳其  Turkey","土库曼斯坦  Turkmenistan","图瓦卢  Tuvalu","乌干达  Uganda","乌克兰  Ukraine","阿拉伯联合酋长国  United Arab Emirates","英国  United Kingdom","美国  United States","乌拉圭  Uruguay","乌兹别克斯坦  Uzbekistan","瓦努阿图  Vanuatu","梵蒂冈  Vatican City","委内瑞拉  Venezuela","越南  Vietnam","瓦利斯群岛和富图纳群岛  Wallis and Futuna","西撒哈拉  Western Sahara","也门  Yemen","南斯拉夫  Yugoslavia","赞比亚  Zambia","津巴布韦  Zimbabwe"
     };
     private List<String> goodsId=new ArrayList<>();
-    final static String[] logServer = {"全部","菜鸟特货专线-标准","AliExpress 无忧物流-标准","4PX新邮挂号小包"};
+    final static String[] logServer = {"全部","菜鸟特货专线-标准","AliExpress 无忧物流-标准","ePacket","4PX新邮挂号小包","DHL",};
     @FXML
     private void initialize() {
     }
@@ -74,9 +72,12 @@ public class DataController {
             server=(ComboBox)box13.getChildren().get(1);
             server.getItems().addAll(logServer);
             goodsType.getItems().add("全部");
+            setHotSale();
         }catch (IOException e){
             e.printStackTrace();
         }
+
+
     }
     /**开始搜索，获取数据*/
     public void handleSearchDataAction(ActionEvent actionEvent) {
@@ -88,9 +89,57 @@ public class DataController {
         String logic = server.getSelectionModel().getSelectedItem().toString();
         List<Order> orders = da.search(coun,goods,logic);
         setData(orders);
+        da.close();
 
     }
 
+    /**获取热销国家*/
+    private void setHotSale()
+    {
+        VBox box3=(VBox)dataBox.lookup("#hotSale");
+        //获取销量前三的国家
+        Label top1=(Label)box3.getChildren().get(1);
+        Label top2=(Label)box3.getChildren().get(2);
+        Label top3=(Label)box3.getChildren().get(3);
+        SaleComparator comparator=new SaleComparator();
+        DataDA da = new DataDA();
+        Map<String,Integer> map=new HashMap<>();
+        List<Order> orders=da.search();
+        List<Map.Entry<String,Integer>> tops=new ArrayList<>();
+        for(Order o:orders)
+        {
+            String c=o.getCountry();
+            if(map.keySet().contains(c))
+            {
+                map.replace(c,map.get(c)+1);
+            }
+            else{
+                map.put(c,1);
+            }
+        }
+        for(Map.Entry<String,Integer> e:map.entrySet())
+        {
+            if(tops.size()<3)
+                tops.add(e);
+            else if(e.getValue()>tops.get(2).getValue()){
+                tops.add(e);
+                Collections.sort(tops,comparator);
+                tops.remove(3);
+            }
+        }
+        if(tops.get(0)!=null)
+            top1.setText(" 1. "+tops.get(0).getKey()+"："+tops.get(0).getValue()+"件");
+        else
+            top1.setText("NULL");
+        if(tops.get(1)!=null)
+            top2.setText(" 2. "+tops.get(1).getKey()+"："+tops.get(1).getValue()+"件");
+        else
+            top2.setText("NULL");
+        if(tops.get(2)!=null)
+            top3.setText(" 3. "+tops.get(2).getKey()+"："+tops.get(2).getValue()+"件");
+        else
+            top3.setText("NULL");
+    }
     private void setData(List<Order> orders)
     {
         float totalProfit=0;

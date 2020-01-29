@@ -10,8 +10,7 @@
 <?import javafx.geometry.Insets?>
 <GridPane xmlns="http://javafx.com/javafx" hgap="8" vgap="8"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="controller.AddNewController"
-          prefHeight="400.0" prefWidth="400.0" alignment="CENTER">
+          prefHeight="500.0" prefWidth="500.0" alignment="CENTER">
 
     <children>
         <Label alignment="CENTER" text="订单号：" GridPane.columnIndex="0"  GridPane.rowIndex="0"/>
@@ -32,8 +31,9 @@
                 <FXCollections fx:factory ="observableArrayList">
                     <String fx:value="菜鸟特货专线-标准"/>
                     <String fx:value="AliExpress 无忧物流-标准"/>
+                    <String fx:value="ePacket"/>
                     <String fx:value="4PX新邮挂号小包"/>
-
+                    <String fx:value="DHL"/>
                 </FXCollections>
             </items>
         </ComboBox>

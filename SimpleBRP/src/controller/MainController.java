@@ -49,28 +49,15 @@ public class MainController {
         pane.setPadding(new Insets(5,5,0,5));
         dataDA.close();
     }
-    //管理
-    public void handleManageButtonAction(ActionEvent actionEvent) {
-    }
 
     //新建订单
     public void handleAddButtonAction(ActionEvent actionEvent) {
-        AddNewController controller = new AddNewController(this);
-        Dialog<Order> dialog = new Dialog<>();
-        dialog.setTitle("添加新的订单");
-        GridPane gridPane=controller.getPane();
-        dialog.getDialogPane().setContent(gridPane);
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK,ButtonType.CANCEL);
-        dialog.setResultConverter(button->{
-            if(button==ButtonType.OK)
-            {
-                TextField t=(TextField)gridPane.lookup("#orderId");
-                return new Order(t.getText());
-            }
-            else
-                return null;
-        });
-        dialog.show();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("添加方式");
+        alert.setHeaderText("请使用数据库导入添加订单：");
+        alert.setContentText("将原始数据Excel表格导入数据库，数据即可更新");
+        alert.show();
+
     }
 
     //搜索订单
