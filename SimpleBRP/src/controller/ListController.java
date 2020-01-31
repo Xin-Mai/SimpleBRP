@@ -87,7 +87,7 @@ public class ListController {
         country.setText(o.getCountry());
         //物流服务
         ComboBox logServer =(ComboBox)gridPane.lookup("#logServer");
-        logServer.cancelEdit();
+        logServer.setEditable(false);
         logServer.setValue(o.getLogistics().getServer());
         //物流单号
         TextField logId=(TextField)gridPane.lookup("#logId");

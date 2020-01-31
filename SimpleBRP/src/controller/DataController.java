@@ -12,6 +12,7 @@ import javafx.util.Pair;
 import order.Order;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class DataController {
@@ -65,12 +66,12 @@ public class DataController {
             box2=(HBox)dataBox.getChildren().get(1);
             HBox box11=(HBox)box1.getChildren().get(0);
             country=(ComboBox)box11.getChildren().get(1);
-            country.getItems().addAll(countryList);
+            country.getItems().addAll(Arrays.asList(countryList));
             HBox box12 =(HBox)box1.getChildren().get(1);
             goodsType = (ComboBox)box12.getChildren().get(1);
             HBox box13 = (HBox)box1.getChildren().get(2);
             server=(ComboBox)box13.getChildren().get(1);
-            server.getItems().addAll(logServer);
+            server.getItems().addAll(Arrays.asList(logServer));
             goodsType.getItems().add("全部");
             setHotSale();
         }catch (IOException e){
