@@ -1,6 +1,6 @@
 package controller;
 
-import dataDA.DataDA;
+import module.dataDA.DataDA;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,11 +8,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
-import order.Order;
+import module.order.Order;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class DataController {
@@ -57,7 +55,7 @@ public class DataController {
     public DataController(){}
     public DataController(MainController m)
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/data.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/data.fxml"));
         this.mainController=m;
         this.back=m.getPane();
         try{
@@ -190,4 +188,6 @@ public class DataController {
     public VBox getDataBox() {
         return dataBox;
     }
+
 }
+

@@ -1,14 +1,14 @@
 package controller;
 
-import dataDA.DataDA;
+import module.dataDA.DataDA;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import order.Goods;
-import order.Order;
+import module.order.Goods;
+import module.order.Order;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -45,7 +45,7 @@ public class ListController {
 
     private void loadPane()
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/addNew.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addNew.fxml"));
         try{
             gridPane=loader.load();
         }catch (IOException e)

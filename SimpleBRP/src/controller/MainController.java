@@ -1,23 +1,13 @@
 package controller;
 
-import dataDA.DataDA;
+import module.dataDA.DataDA;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.LoadException;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
-import order.Order;
-import view.PageManager;
+import module.order.Order;
 
-import java.io.IOException;
 import java.util.List;
 
 public class MainController {
@@ -28,13 +18,19 @@ public class MainController {
     public VBox page;
     private VBox data;
     private Pagination pagination;
+    List<Order> orders;
+
+    public MainController()
+    {
+        DataDA dataDA = new DataDA();
+        orders=dataDA.search();
+        dataDA.close();
+    }
 
 
     //查看全部订单
     public void handleCheckButtonAction(ActionEvent actionEvent) {
         pane.getChildren().remove(data);
-        DataDA dataDA = new DataDA();
-        List<Order> orders=dataDA.search();
         PageManager manager = new PageManager(orders,page);
         if(pagination==null)
         {
@@ -47,7 +43,6 @@ public class MainController {
         pagination.setPageCount(orders.size()/10+1);
         pagination.setPageFactory((Integer pageIndex) -> manager.createPage(pageIndex));
         pane.setPadding(new Insets(5,5,0,5));
-        dataDA.close();
     }
 
     //新建订单

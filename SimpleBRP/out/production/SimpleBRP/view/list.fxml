@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+<VBox fx:id="pageLoader" fx:controller="controller.ListController" HBox.hgrow="ALWAYS"
+      maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1067.0" spacing="5.0" stylesheets="@mainStyle.css"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox fx:id="title" maxHeight="40.0" prefHeight="20.0" prefWidth="1067.0" HBox.hgrow="ALWAYS" spacing="40.0" styleClass="title" VBox.vgrow="NEVER">
+            <children>
+                <Label text="订单号" textFill="crimson" styleClass="title" alignment="CENTER" graphicTextGap="8.0" prefHeight="40.0" prefWidth="100.0" HBox.hgrow="ALWAYS" textAlignment="JUSTIFY" >
+                </Label>
+                <Label text="订单金额" alignment="CENTER" styleClass="title" graphicTextGap="8.0" prefHeight="40.0" prefWidth="100.0" HBox.hgrow="ALWAYS" textAlignment="JUSTIFY">
+                </Label>
+                <Label text="型号" alignment="CENTER" styleClass="title" graphicTextGap="8.0" prefHeight="40.0" prefWidth="100.0" HBox.hgrow="ALWAYS" textAlignment="JUSTIFY">
+                </Label>
+                <Label text="成本" alignment="CENTER" styleClass="title" graphicTextGap="8.0" prefHeight="40.0" prefWidth="60.0" HBox.hgrow="ALWAYS" textAlignment="JUSTIFY">
+                </Label>
+                <Label text="利润" alignment="CENTER" styleClass="title" graphicTextGap="8.0" prefHeight="40.0" prefWidth="60.0" HBox.hgrow="ALWAYS" textAlignment="JUSTIFY">
+                </Label>
+                <Label text="利润率" alignment="CENTER" styleClass="title" graphicTextGap="8.0" prefHeight="40.0" prefWidth="80.0" HBox.hgrow="ALWAYS" textAlignment="JUSTIFY">
+                </Label>
+                <Label text="收货国家" alignment="CENTER" styleClass="title" graphicTextGap="8.0" prefHeight="40.0" prefWidth="100.0" HBox.hgrow="ALWAYS" textAlignment="JUSTIFY">
+                </Label>
+                <Label text="物流方式" alignment="CENTER" styleClass="title" graphicTextGap="8.0" prefHeight="40.0" prefWidth="160.0" textAlignment="JUSTIFY">
+                </Label>
+            </children>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+        </HBox>
+        <fx:include source="item.fxml"/>
+        <fx:include source="item.fxml"/>
+        <fx:include source="item.fxml"/>
+        <fx:include source="item.fxml"/>
+        <fx:include source="item.fxml"/>
+        <fx:include source="item.fxml"/>
+        <fx:include source="item.fxml"/>
+        <fx:include source="item.fxml"/>
+        <fx:include source="item.fxml"/>
+        <fx:include source="item.fxml"/>
+    </children>
+
+</VBox>
