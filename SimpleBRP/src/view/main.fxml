@@ -1,59 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
-<VBox fx:controller="controller.MainController"
-      maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1067.0" spacing="10.0" stylesheets="@mainStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <HBox maxHeight="60.0" prefHeight="60.0" prefWidth="1067.0" spacing="10.0" styleClass="bg" VBox.vgrow="NEVER">
-            <children>
-                <Button fx:id="check" text="查看订单"
-                        onAction="#handleCheckButtonAction"
-                        maxWidth="Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0"  HBox.hgrow="ALWAYS">
-                </Button>
-                <Button fx:id="add" text="更新数据"
-                        onAction="#handleAddButtonAction"
-                        maxWidth="Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0"  HBox.hgrow="ALWAYS">
-                </Button>
-                <Button fx:id="summaryData" text="综合数据"
-                        onAction="#handleDataButtonAction"
-                        maxWidth="Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0"  HBox.hgrow="ALWAYS">
-                </Button>
-                <HBox maxHeight="60.0" prefHeight="60.0" prefWidth="400.0" spacing="10.0" styleClass="bg" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                    <children>
-                        <TextField fx:id="search_content" prefHeight="40.0" prefWidth="300.0" promptText="查询" HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="search" text="搜索"
-                                alignment="TOP_CENTER"
-                                onAction="#handleSearchButtonAction"
-                                maxWidth="Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="60.0" HBox.hgrow="SOMETIMES">
-                        </Button>
-                    </children>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
-                    </padding>
-                </HBox>
 
-            </children>
-            <VBox.margin>
-                <Insets />
-            </VBox.margin>
-            <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </padding></HBox>
-    </children>
-    <padding>
-        <Insets top="10.0" />
-    </padding>
-    <HBox fx:id="pane" maxHeight="700.0" maxWidth="Infinity" prefHeight="400.0" prefWidth="1067.0" spacing="10.0" styleClass="bg"  VBox.vgrow="ALWAYS">
-        <children>
-                <fx:include maxHeight="700.0" prefHeight="600.0" maxWidth="Infinity" prefWidth="1067.0" fx:id="page" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" source="list.fxml" visible="false"/>
-        </children>
-    </HBox>
-</VBox>
-
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXTabPane prefHeight="600.0" prefWidth="1067.0" style="-fx-background-color: #ffffff;" tabMinHeight="60.0" tabMinWidth="200.0">
+         <tabs>
+            <Tab text="订单列表">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="数据概览">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" pickOnBounds="false" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+       <HBox alignment="CENTER" layoutX="600.0" maxWidth="445.0" prefHeight="60.0" prefWidth="445.0" style="-fx-alignment: right;">
+           <children>
+               <JFXTextField focusColor="#eeeeee" maxWidth="360.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="36.0" prefWidth="243.0" promptText="搜索" style="-fx-background-color: white;" unFocusColor="#aaaaaa">
+               <padding>
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+               </padding></JFXTextField>
+            <JFXButton prefHeight="36.0" prefWidth="64.0" style="-fx-background-color: #BBBBBB; -fx-background-radius: 0;" text="搜索" textFill="WHITE" />
+           </children>
+       </HBox>
+      <JFXButton alignment="CENTER" layoutX="400.0" maxHeight="60.0" maxWidth="200.0" pickOnBounds="false" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-style: none; -fx-border-radius: 0;" text="更新数据" textFill="WHITE" />
+   </children>
+</Pane>

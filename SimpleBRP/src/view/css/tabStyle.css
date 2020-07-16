@@ -1,0 +1,6 @@
+.tab-pane>*.tab-header-area>*.tab-header-background {
+   -fx-background-color: -fx-outer-border, -fx-text-box-border, #333333;
+}
+.tab{
+    -fx-background-color:#000000;
+}
