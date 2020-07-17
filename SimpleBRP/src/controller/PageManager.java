@@ -26,6 +26,7 @@ public class PageManager {
     @FXML
     private VBox pageLoader;
     private List<String[]> content;
+    private MainController mainController;
 
     /**每页10条信息*/
     public int itemPerPage()
@@ -44,6 +45,7 @@ public class PageManager {
 
     /**用于回调的Page Factory方法*/
     public VBox createPage(int pageIndex) {
+        //不知道为啥是Null
         pageLoader.setPrefSize(1067,500);
         int i;
         int page = pageIndex*itemPerPage();
@@ -82,8 +84,8 @@ public class PageManager {
             Label server = (Label)nodes.get(7);
             server.setText(strings[7]);
         }
-        if(i<itemPerPage())
-            clearBox(itemPerPage()-i);
+        //if(i<itemPerPage())
+            //clearBox(itemPerPage()-i);
         return pageLoader;
     }
 

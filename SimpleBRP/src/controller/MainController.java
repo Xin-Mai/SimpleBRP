@@ -20,32 +20,31 @@ public class MainController {
     //alt+enter即可把组件映射到这里
     @FXML
     public Pagination ordersList;
+    @FXML
+    public VBox page;
+    @FXML
+    private PageManager pageController;
 
     //数据类
     public DataManageable DA;
     private PageManager pageManager;
 
 
-    public MainController() {
-        VBox pageLoader=null;
-        try{
-            Parent anchorPane=FXMLLoader.load(getClass().getResource("/view/page.fxml"));
-            pageManager=new PageManager();
-            pageLoader=(VBox)anchorPane.lookup("pageLoader");
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        //pageManager=new PageManager();
-        //pageManager.setPageLoader(pageLoader);
+    @FXML
+    private void initialize(){
 
+    }
+    public MainController() {
+        pageManager=new PageManager();
         DA=new DataAssistant();
         //init();
     }
 
     public void init(){
-        LoadThread load=new LoadThread(pageManager,DA);
+        //pageManager.setPageLoader(page);
+        LoadThread load=new LoadThread(pageController,DA);
         Thread loadThread=new Thread(load,"load");
         loadThread.start();
-        ordersList.setPageFactory((Integer pageIndex)->pageManager.createPage(pageIndex));
+        ordersList.setPageFactory((Integer pageIndex)->pageController.createPage(pageIndex));
     }
 }
