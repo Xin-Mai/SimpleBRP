@@ -2,21 +2,25 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.Pagination;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import module.order.Order;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class PageManager {
-    private Pagination pagination;
+    //private Pagination pagination;
     static final String[] TITLES = {"订单号","订单金额","型号","成本","利润","利润率","收货国家","物流方式"};
     private List<Order> orders;
     @FXML
@@ -30,6 +34,8 @@ public class PageManager {
     }
 
     /**初始化资源*/
+    public PageManager(){
+    }
     public PageManager(List<Order> o)
     {
         this.orders=o;
@@ -38,14 +44,12 @@ public class PageManager {
 
     /**用于回调的Page Factory方法*/
     public VBox createPage(int pageIndex) {
-        if(!pageLoader.isVisible())
-            pageLoader.setVisible(true);
         pageLoader.setPrefSize(1067,500);
         int i;
         int page = pageIndex*itemPerPage();
         //每3页加载一次
-        if(pageIndex%3==0)
-            content=preLoad(page);
+        //if(pageIndex%3==0)
+        //    content=preLoad(page);
         for(i=0;i<itemPerPage()&&(page+i<orders.size());i++)
         {
             HBox item = (HBox)pageLoader.getChildren().get(i+1);
@@ -155,5 +159,13 @@ public class PageManager {
 
     /**查看详情*/
     public void handleOrderDetailAction(ActionEvent actionEvent) {
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public void setPageLoader(VBox pageLoader){
+        //this.pageLoader=pageLoader;
     }
 }

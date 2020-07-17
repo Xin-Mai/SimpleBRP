@@ -11,6 +11,7 @@ public interface DataManageable {
     List<Order> search();
     //获取全部数据
     List<Order> getAll();
+    void getAll(List<Order> list);
     //选择文件
     boolean selectFile(File file);
     //获取综合数据

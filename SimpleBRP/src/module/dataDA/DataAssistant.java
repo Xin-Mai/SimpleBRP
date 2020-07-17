@@ -104,6 +104,10 @@ public class DataAssistant implements DataManageable{
         return null;
     }
 
+    public void getAll(List<Order> orders){
+
+    }
+
     @Override
     public boolean selectFile(File file) {
         return false;
