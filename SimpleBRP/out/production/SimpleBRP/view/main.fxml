@@ -16,7 +16,8 @@
               <content>
                 <AnchorPane fx:id="ordersPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                    <children>
-                       <Pagination fx:id="ordersList" maxPageIndicatorCount="5" prefHeight="540.0" prefWidth="1067.0" />
+                       <fx:include fx:id="page" source="page.fxml"/>
+                       <Pagination fx:id="ordersList" maxPageIndicatorCount="5" prefHeight="540.0" prefWidth="1067.0"></Pagination>
                    </children>
                 </AnchorPane>
               </content>
