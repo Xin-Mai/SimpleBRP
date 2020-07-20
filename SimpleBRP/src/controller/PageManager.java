@@ -1,17 +1,19 @@
 package controller;
 
+import com.jfoenix.controls.JFXListView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
-import javafx.scene.control.Pagination;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import module.order.Order;
 
 import java.io.IOException;
@@ -22,6 +24,8 @@ import java.util.List;
 public class PageManager {
     //private Pagination pagination;
     static final String[] TITLES = {"订单号","订单金额","型号","成本","利润","利润率","收货国家","物流方式"};
+    //每页一个的listView
+    public JFXListView list;
     private List<Order> orders;
     @FXML
     private VBox pageLoader;
@@ -49,43 +53,23 @@ public class PageManager {
         pageLoader.setPrefSize(1067,500);
         int i;
         int page = pageIndex*itemPerPage();
-        //每3页加载一次
-        //if(pageIndex%3==0)
-        //    content=preLoad(page);
-        for(i=0;i<itemPerPage()&&(page+i<orders.size());i++)
-        {
-            HBox item = (HBox)pageLoader.getChildren().get(i+1);
-            String[] strings = content.get((page+i)%30);
-            List<Node> nodes=item.getChildren();
-            //订单号使用超链接
-            Hyperlink id = (Hyperlink)nodes.get(0);
-            id.setText(strings[0]);
-            //订单金额（美元）
-            Label money = (Label)nodes.get(1);
-            money.setText(strings[1]);
-            //商品编码
-            //超过一件商品只显示其中两件
-            Label goods = (Label)nodes.get(2);
-            goods.setText(strings[2]);
-            goods.setStyle(" -fx-text-fill: blue;-fx-font-size: 12px;");
-            //成本
-            Label cost =(Label) nodes.get(3);
-            cost.setText(strings[3]);
-            //利润
-            Label profit = (Label)nodes.get(4);
-            profit.setText(strings[4]);
-            //利润率
-            Label profitRate = (Label)nodes.get(5);
-            profitRate.setText(strings[5]);
-            //收货国家
-            Label country = (Label)nodes.get(6);
-            country.setText(strings[6]);
-            //物流方式
-            Label server = (Label)nodes.get(7);
-            server.setText(strings[7]);
+        if(list!=null){
+            //输入List的内容
+            ObservableList<Order> listContent=FXCollections.observableArrayList();
+            for(i=0;i<10&&page+i<orders.size();i++){
+                listContent.add(orders.get(page+i));
+            }
+            list.setItems(listContent);
+            list.setCellFactory(new Callback<ListView, ListCell>() {
+                @Override
+                public ListCell call(ListView param) {
+                    new OrderCell();
+                    return null;
+                }
+            });
+
+
         }
-        //if(i<itemPerPage())
-            //clearBox(itemPerPage()-i);
         return pageLoader;
     }
 

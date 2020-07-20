@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<Pane fx:controller="controller.MainController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
       <JFXTabPane prefHeight="600.0" prefWidth="1067.0" style="-fx-background-color: #ffffff;" tabMinHeight="60.0" tabMinWidth="200.0">
          <tabs>
@@ -16,8 +16,8 @@
               <content>
                 <AnchorPane fx:id="ordersPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                    <children>
-                       <fx:include fx:id="page" source="page.fxml"/>
-                       <Pagination fx:id="ordersList" maxPageIndicatorCount="5" prefHeight="540.0" prefWidth="1067.0"></Pagination>
+                       <fx:include fx:id="page" source="page.fxml" />
+                       <Pagination fx:id="ordersList" maxPageIndicatorCount="5" pageCount="1" prefHeight="540.0" prefWidth="1067.0" />
                    </children>
                 </AnchorPane>
               </content>

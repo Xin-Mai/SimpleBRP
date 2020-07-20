@@ -80,4 +80,9 @@ public class Goods {
     public void setPrice(float price) {
         this.price = price;
     }
+
+    //以编号*数量的形式返回所购买的产品
+    public String toString(){
+        return this.id+"*"+this.quantity+";";
+    }
 }

@@ -22,12 +22,13 @@ public class MainController {
     public Pagination ordersList;
     @FXML
     public VBox page;
+    //如果不起名字叫xxController就会自动生成Controller失败
     @FXML
     private PageManager pageController;
 
     //数据类
     public DataManageable DA;
-    private PageManager pageManager;
+    //private PageManager pageManager;
 
 
     @FXML
@@ -35,7 +36,7 @@ public class MainController {
 
     }
     public MainController() {
-        pageManager=new PageManager();
+        //pageManager=new PageManager();
         DA=new DataAssistant();
         //init();
     }
@@ -46,5 +47,6 @@ public class MainController {
         Thread loadThread=new Thread(load,"load");
         loadThread.start();
         ordersList.setPageFactory((Integer pageIndex)->pageController.createPage(pageIndex));
+        ordersList.setPageCount(DA.getDataSize()/10);
     }
 }

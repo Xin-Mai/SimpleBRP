@@ -16,4 +16,6 @@ public interface DataManageable {
     boolean selectFile(File file);
     //获取综合数据
     Info getInfo();
+    //获取数据多少
+    Integer getDataSize();
 }

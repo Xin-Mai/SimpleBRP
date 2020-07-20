@@ -21,7 +21,8 @@ public class LoadThread implements Runnable {
     @Override
     public void run(){
         while(DA==null);
-        this.pageManager.setOrders(orderList);
+        this.pageManager.setOrders(orderList
+        );
         DA.getAll(orderList);
     }
 
