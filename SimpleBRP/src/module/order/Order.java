@@ -96,12 +96,30 @@ public class Order {
         this.orderTime = orderTime;
     }
 
+    public void setOrderTime(String time){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy/mm/dd hh:mm");
+        try {
+            this.orderTime=simpleDateFormat.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Date getPayTime() {
         return payTime;
     }
 
     public void setPayTime(Date payTime) {
         this.payTime = payTime;
+    }
+
+    public void setPayTime(String date){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy/mm/dd hh:mm");
+        try {
+            this.payTime=simpleDateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public float getMoney()

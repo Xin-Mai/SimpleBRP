@@ -2,6 +2,7 @@ package module.dataDA;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
 import module.Info;
+import module.order.Logistics;
 import module.order.Order;
 
 import javax.xml.crypto.Data;
@@ -27,6 +28,7 @@ public class DataAssistant implements DataManageable{
 
     private Connection connection;
     private Statement statement;
+    private Statement log_statement;
 
     //全部订单列表
     private List<Order> orderList=null;
@@ -50,6 +52,7 @@ public class DataAssistant implements DataManageable{
             connection= DriverManager.getConnection(CSV_JDBC_HEADER+path,properties);
             //创建Statement
             statement=connection.createStatement();
+            log_statement=connection.createStatement();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -139,19 +142,25 @@ public class DataAssistant implements DataManageable{
         }
         else{
             String sql="SELECT * FROM "+ORDER_CSV_NAME;
-            String sql2="SELECT * FROM "+LOGISTIC_CSV_NAME+" WHERE "+logisticsHeaders[0]+" ='";
+
             ResultSet resultSet=null;
             try{
                 resultSet=statement.executeQuery(sql);
                 while(resultSet.next()){
                     String id=resultSet.getString(orderHeaders[0]);
+                    String log_id=resultSet.getString("实际发货单号");
                     //筛查刷单
-                    //String log_sql=sql2+id+"'";
-                    String log_sql = "SELECT * FROM 运费 WHERE 国际物流单号 ='"+id+"'";
-                    ResultSet log_resultSet=statement.executeQuery(log_sql);
-                    //查得到物流单号，不是刷单
-                    if(log_resultSet.next()){
+                    /**ResultSet与Statement是关联的，必须新开一个Statement*/
+                    Logistics logistics=isValid(log_id);
+                    //不是刷单
+                    if(logistics!=null){
                         Order order=new Order(id);
+                        order.setLogistics(logistics);
+                        order.setOrderTime(resultSet.getString(orderHeaders[1]));
+                        order.setPayTime(resultSet.getString(orderHeaders[2]));
+                        //goods暂时空着
+                        order.setMoney(resultSet.getFloat(orderHeaders[4]));
+                        order.setCountry(resultSet.getString(orderHeaders[5]));
                         orders.add(order);
                     }
                 }
@@ -162,6 +171,31 @@ public class DataAssistant implements DataManageable{
         }
     }
 
+    /**
+     *传进一个Order，如果其id有对应的物流信息，则返回Logistics对象;否则返回null
+     * 订单表与物流表对应的是,订单表中的实际发货单号（取出物流服务名）对应物流的国际物流单号
+     */
+    private Logistics isValid(String order_log_id) throws SQLException{
+            String log_id;
+        if(order_log_id.contains(":"))
+            log_id=order_log_id.split(":")[1];
+        else
+            log_id=order_log_id;
+        if(log_id.contains("\n")){
+            log_id=log_id.substring(0,log_id.indexOf('\n'));
+        }
+        String sql="SELECT * FROM logistics WHERE id = '"+log_id+"'";
+        ResultSet resultSet=log_statement.executeQuery(sql);
+        if(resultSet.next()){
+            Logistics logistics=new Logistics();
+            logistics.setId(log_id);
+            logistics.setServer(resultSet.getString(logisticsHeaders[1]));
+            logistics.setWeight(resultSet.getFloat(logisticsHeaders[2]));
+            logistics.setMoney(resultSet.getFloat(logisticsHeaders[3]));
+            return logistics;
+        }
+        return null;
+    }
     @Override
     public boolean selectFile(File file) {
         return false;
