@@ -97,7 +97,7 @@ public class Order {
     }
 
     public void setOrderTime(String time){
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy/mm/dd hh:mm");
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm");
         try {
             this.orderTime=simpleDateFormat.parse(time);
         } catch (ParseException e) {
@@ -114,7 +114,7 @@ public class Order {
     }
 
     public void setPayTime(String date){
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy/mm/dd hh:mm");
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm");
         try {
             this.payTime=simpleDateFormat.parse(date);
         } catch (ParseException e) {

@@ -8,10 +8,7 @@ import module.order.Order;
 import javax.xml.crypto.Data;
 import java.io.*;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 
 public class DataAssistant implements DataManageable{
@@ -131,7 +128,9 @@ public class DataAssistant implements DataManageable{
 
     @Override
     public List<Order> getAll() {
-        return null;
+        List<Order> orders=new ArrayList<>();
+        this.getAll(orders);
+        return orders;
     }
 
     //注意将源文件的编码改为UTF-8,否则无法读取中文表头
@@ -159,7 +158,8 @@ public class DataAssistant implements DataManageable{
                         order.setOrderTime(resultSet.getString(orderHeaders[1]));
                         order.setPayTime(resultSet.getString(orderHeaders[2]));
                         //goods暂时空着
-                        order.setMoney(resultSet.getFloat(orderHeaders[4]));
+                        String money=resultSet.getString(orderHeaders[4]).substring(4);
+                        order.setMoney(Float.parseFloat(money));
                         order.setCountry(resultSet.getString(orderHeaders[5]));
                         orders.add(order);
                     }
@@ -207,6 +207,7 @@ public class DataAssistant implements DataManageable{
     }
 
     public Integer getDataSize(){
+        dataSize=orderList.size();
         return dataSize;
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox fx:id="title" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="1067.0" spacing="15.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+         <children>
+            <Label prefWidth="120" text="订单号" HBox.hgrow="ALWAYS" />
+             <Label prefWidth="80" text="订单金额" HBox.hgrow="ALWAYS" />
+             <Label prefWidth="150" text="商品编码" HBox.hgrow="ALWAYS" />
+             <Label prefWidth="80" text="成本" HBox.hgrow="ALWAYS" />
+             <Label prefWidth="80" text="利润" HBox.hgrow="ALWAYS" />
+             <Label prefWidth="80" text="利润率" HBox.hgrow="ALWAYS" />
+             <Label prefWidth="150" text="国家" HBox.hgrow="ALWAYS" />
+             <Label prefWidth="150" text="物流服务" HBox.hgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets left="15.0" />
+         </padding>
+      </HBox>

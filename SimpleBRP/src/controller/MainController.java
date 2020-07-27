@@ -43,10 +43,12 @@ public class MainController {
 
     public void init(){
         //pageManager.setPageLoader(page);
-        LoadThread load=new LoadThread(pageController,DA);
-        Thread loadThread=new Thread(load,"load");
-        loadThread.start();
+         //LoadThread load=new LoadThread(pageController,DA);
+        //Thread loadThread=new Thread(load,"load");
+        //loadThread.start();
+        List<Order> orders=DA.getAll();
         ordersList.setPageFactory((Integer pageIndex)->pageController.createPage(pageIndex));
-        ordersList.setPageCount(DA.getDataSize()/10);
+        ordersList.setPageCount(orders.size()/10);
+        pageController.setOrders(orders);
     }
 }

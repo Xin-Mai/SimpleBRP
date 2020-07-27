@@ -9,6 +9,7 @@
 
 <VBox fx:id="pageLoader" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PageManager">
    <children>
+      <fx:include source="title.fxml"></fx:include>
       <JFXListView fx:id="list"></JFXListView>
    </children>
     </VBox>

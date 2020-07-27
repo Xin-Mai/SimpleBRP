@@ -63,8 +63,8 @@ public class PageManager {
             list.setCellFactory(new Callback<ListView, ListCell>() {
                 @Override
                 public ListCell call(ListView param) {
-                    new OrderCell();
-                    return null;
+                    OrderCell cell=new OrderCell();
+                    return cell;
                 }
             });
 
