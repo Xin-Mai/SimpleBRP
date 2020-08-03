@@ -16,6 +16,7 @@ public class Goods {
         this.id=id;
         int i=id.lastIndexOf(" ");
         String s=id.substring(i+1);
+        id=id.substring(0,id.indexOf(" "));
         try{
             quantity=Integer.parseInt(s);
         }catch (Exception e)
@@ -79,6 +80,7 @@ public class Goods {
 
     public void setPrice(float price) {
         this.price = price;
+        this.cost=price*quantity;
     }
 
     //以编号*数量的形式返回所购买的产品

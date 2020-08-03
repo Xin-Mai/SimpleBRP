@@ -81,19 +81,7 @@ public class PageManager {
             s1+="  ";
         return s1;
     }
-    /**清空内容*/
-    private void clearBox()
-    {
-        for(int i=1;i<=10;i++)
-        {
-            HBox item =(HBox) pageLoader.getChildren().get(i);
-            for(Node n:item.getChildren())
-            {
-                if(n instanceof Label||n instanceof Hyperlink)
-                    ((Labeled) n).setText("");
-            }
-        }
-    }
+
     private void clearBox(int j)
     {
         for(int i=j;i<=10;i++)

@@ -17,5 +17,7 @@ public interface DataManageable {
     //获取综合数据
     Info getInfo();
     //获取数据多少
-    Integer getDataSize();
+    int getDataSize();
+    //获取商品的成本
+    float getGoodCost(String type);
 }

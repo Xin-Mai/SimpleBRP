@@ -2,6 +2,7 @@ package module.dataDA;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
 import module.Info;
+import module.order.Goods;
 import module.order.Logistics;
 import module.order.Order;
 
@@ -14,18 +15,21 @@ import java.util.*;
 public class DataAssistant implements DataManageable{
     private static final String CSV_JDBC_DRIVER = "org.relique.jdbc.csv.CsvDriver";
     private static final String CSV_JDBC_HEADER = "jdbc:relique:csv:";
-    private static final String CSV_NAME="ecdict";
+    //private static final String CSV_NAME="ecdict";
     private static final String ORDER_CSV_NAME="订单";
-    private static final String LOGISTIC_CSV_NAME="运费";
+    private static final String LOGISTIC_CSV_NAME="logistics";
+    private static final String GOODS_CSV_NAME="cost";
     private String resourcePath=System.getProperty("user.dir");
     private static String resourceFile="resource.txt";
     private String path= System.getProperty("user.dir");
     private static final String[] orderHeaders={"订单号","下单时间","付款时间","商品编码","订单金额","收货国家"};
     private static final String[] logisticsHeaders={"国际物流单号","物流服务名称","订单重量","金额（CNY）"};
+    private static final String[] goodsHeader={"type","color","price"};
 
     private Connection connection;
     private Statement statement;
     private Statement log_statement;
+    private Statement goods_statement;
 
     //全部订单列表
     private List<Order> orderList=null;
@@ -50,6 +54,7 @@ public class DataAssistant implements DataManageable{
             //创建Statement
             statement=connection.createStatement();
             log_statement=connection.createStatement();
+            goods_statement=connection.createStatement();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -83,30 +88,12 @@ public class DataAssistant implements DataManageable{
         }
     }
 
-    public Map<String, String> search(String word)
-    {
-        char c=word.toLowerCase().charAt(0);
-        ResultSet resultSet;
-        String temp="";
-        String sql="SELECT * FROM "+CSV_NAME+" WHERE word = '"+word+"'";
-        Map<String, String> result=new HashMap<>();
-        try {
-            //ResultSet resultSet=binSearch(word);
-            resultSet=statement.executeQuery(sql);
-            while(resultSet.next())
-            {
-                for(String key:orderHeaders)
-                    result.put(key,resultSet.getString(key));
-            }
-            resultSet.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+
     public void close(){
         try {
             statement.close();
+            goods_statement.close();
+            log_statement.close();
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,6 +145,15 @@ public class DataAssistant implements DataManageable{
                         order.setOrderTime(resultSet.getString(orderHeaders[1]));
                         order.setPayTime(resultSet.getString(orderHeaders[2]));
                         //goods暂时空着
+                        String good=resultSet.getString(orderHeaders[3]);
+                        String[] goods=good.split(";");
+                        List<Goods> goodsList=new ArrayList<>();
+                        for(String i:goods){
+                            Goods g=new Goods(i);
+                            g.setPrice(getGoodCost(g.getId()));
+                            goodsList.add(g);
+                        }
+                        order.setGoods(goodsList);
                         String money=resultSet.getString(orderHeaders[4]).substring(4);
                         order.setMoney(Float.parseFloat(money));
                         order.setCountry(resultSet.getString(orderHeaders[5]));
@@ -184,7 +180,7 @@ public class DataAssistant implements DataManageable{
         if(log_id.contains("\n")){
             log_id=log_id.substring(0,log_id.indexOf('\n'));
         }
-        String sql="SELECT * FROM logistics WHERE id = '"+log_id+"'";
+        String sql="SELECT * FROM "+ LOGISTIC_CSV_NAME+" WHERE id = '"+log_id+"'";
         ResultSet resultSet=log_statement.executeQuery(sql);
         if(resultSet.next()){
             Logistics logistics=new Logistics();
@@ -206,8 +202,30 @@ public class DataAssistant implements DataManageable{
         return null;
     }
 
-    public Integer getDataSize(){
+    public int getDataSize(){
         dataSize=orderList.size();
         return dataSize;
+    }
+
+    public float getGoodCost(String type){
+        String[] id=type.split("-");
+        String sql="SELECT "+goodsHeader[2]+" FROM "+GOODS_CSV_NAME+" WHERE "
+                +goodsHeader[0]+"='"+id[0]+"'";
+        if(id.length>1)
+            sql+=" AND "+goodsHeader[1]+"='"+id[1]+"'";
+        ResultSet resultSet= null;
+        try {
+            resultSet = goods_statement.executeQuery(sql);
+            if(resultSet.next()){
+                String price=resultSet.getString(goodsHeader[2]);
+                price=price.split(" ")[0];
+                float cost=Float.parseFloat(price.substring(1));
+                return cost;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+
     }
 }
