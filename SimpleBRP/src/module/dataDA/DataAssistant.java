@@ -210,12 +210,18 @@ public class DataAssistant implements DataManageable{
     public float getGoodCost(String type){
         String[] id=type.split("-");
         String sql="SELECT "+goodsHeader[2]+" FROM "+GOODS_CSV_NAME+" WHERE "
-                +goodsHeader[0]+"='"+id[0]+"'";
+                +goodsHeader[0]+" LIKE '"+id[0]+"%'";
         if(id.length>1)
-            sql+=" AND "+goodsHeader[1]+"='"+id[1]+"'";
+            sql+=" AND "+goodsHeader[1]+" LIKE '"+id[1]+"'";
         ResultSet resultSet= null;
         try {
             resultSet = goods_statement.executeQuery(sql);
+
+            if(!resultSet.next()){
+                sql="SELECT "+goodsHeader[2]+" FROM "+GOODS_CSV_NAME+" WHERE "
+                        +goodsHeader[0]+" LIKE '"+id[0]+"%'";
+                resultSet=goods_statement.executeQuery(sql);
+            }
             if(resultSet.next()){
                 String price=resultSet.getString(goodsHeader[2]);
                 price=price.split(" ")[0];

@@ -13,10 +13,9 @@ public class Goods {
     public Goods(){}
     public Goods(String id)
     {
-        this.id=id;
         int i=id.lastIndexOf(" ");
         String s=id.substring(i+1);
-        id=id.substring(0,id.indexOf(" "));
+        this.id=id.substring(0,id.indexOf(" "));
         try{
             quantity=Integer.parseInt(s);
         }catch (Exception e)
