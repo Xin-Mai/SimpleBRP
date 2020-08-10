@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Pagination;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import module.dataDA.DataAssistant;
 import module.dataDA.DataManageable;
@@ -22,9 +23,13 @@ public class MainController {
     public Pagination ordersList;
     @FXML
     public VBox page;
+    @FXML
+    public HBox dataBox;
     //如果不起名字叫xxController就会自动生成Controller失败
     @FXML
     private PageManager pageController;
+    @FXML
+    private DataController dataController;
 
     //数据类
     public DataManageable DA;
@@ -34,11 +39,11 @@ public class MainController {
     @FXML
     private void initialize(){
 
+
     }
     public MainController() {
         //pageManager=new PageManager();
         DA=new DataAssistant();
-        //init();
     }
 
     public void init(){
@@ -50,5 +55,11 @@ public class MainController {
         ordersList.setPageFactory((Integer pageIndex)->pageController.createPage(pageIndex));
         ordersList.setPageCount(orders.size()/10);
         pageController.setOrders(orders);
+        dataController=new DataController(DA);
+        //dataController.setDA(DA);
+        dataController.setDataBox(dataBox);
+        dataController.init();
+        //dataController.setInfoList(DA.getData());
+
     }
 }

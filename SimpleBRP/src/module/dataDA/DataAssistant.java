@@ -1,12 +1,10 @@
 package module.dataDA;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import module.Info;
 import module.order.Goods;
 import module.order.Logistics;
 import module.order.Order;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
@@ -33,8 +31,13 @@ public class DataAssistant implements DataManageable{
 
     //全部订单列表
     private List<Order> orderList=null;
-
     private Integer dataSize=0;
+    //全部国家的综合信息
+    private Map<String, Info> conInfoMap=null;
+
+    //获取综合数据的线程
+    Thread infoThread=null;
+
     public DataAssistant()
     {
         //System.out.println(path);
@@ -117,7 +120,32 @@ public class DataAssistant implements DataManageable{
     public List<Order> getAll() {
         List<Order> orders=new ArrayList<>();
         this.getAll(orders);
+        this.orderList=orders;
+        //处理综合数据
+        infoThread=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        fillConInfo();
+                    }
+                }, "info");
+        infoThread.start();
         return orders;
+    }
+
+    //获取不同国家的数据
+    private void fillConInfo(){
+        if(conInfoMap==null)
+            conInfoMap=new HashMap<>();
+        for(Order o:orderList){
+            String country=o.getCountry();
+            if(!conInfoMap.containsKey(country)){
+                conInfoMap.put(country,new Info(country));
+            }
+            Info info=conInfoMap.get(country);
+            info.addOrdersNum();
+            info.addMoney(o.getMoney());
+            info.addProfit(o.getProfit());
+        }
     }
 
     //注意将源文件的编码改为UTF-8,否则无法读取中文表头
@@ -198,7 +226,44 @@ public class DataAssistant implements DataManageable{
     }
 
     @Override
-    public Info getInfo() {
+    public Info getInfo(String country) {
+        if(infoThread!=null) {
+            try {
+                infoThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if(conInfoMap!=null)
+            return conInfoMap.get(country);
+        return null;
+    }
+
+    @Override
+    public List<Info> getData(){
+        if(infoThread!=null) {
+            try {
+                infoThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if(conInfoMap!=null){
+            List<Info> infoList= new ArrayList<>();
+            for(Info info:conInfoMap.values())
+                infoList.add(info);
+            infoList.sort(new Comparator<Info>() {
+                @Override
+                public int compare(Info o1, Info o2) {
+                    if(o1.getOrdersNum()<o2.getOrdersNum())
+                        return 1;
+                    else if(o1.getOrdersNum()>o2.getOrdersNum())
+                        return -1;
+                    return 0;
+                }
+            });
+            return infoList;
+        }
         return null;
     }
 

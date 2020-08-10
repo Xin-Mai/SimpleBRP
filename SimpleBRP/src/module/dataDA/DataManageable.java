@@ -15,7 +15,8 @@ public interface DataManageable {
     //选择文件
     boolean selectFile(File file);
     //获取综合数据
-    Info getInfo();
+    Info getInfo(String country);
+    List<Info> getData();
     //获取数据多少
     int getDataSize();
     //获取商品的成本

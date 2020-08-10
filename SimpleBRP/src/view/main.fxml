@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
+<?import javafx.scene.chart.BarChart?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
       <JFXTabPane prefHeight="600.0" prefWidth="1067.0" style="-fx-background-color: #ffffff;" tabMinHeight="60.0" tabMinWidth="200.0">
@@ -24,7 +25,11 @@
             </Tab>
             <Tab text="数据概览">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" pickOnBounds="false" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" pickOnBounds="false" prefHeight="180.0" prefWidth="200.0">
+                      <children>
+                          <fx:include fx:id="dataBox" source="data.fxml"/>
+                      </children>
+                  </AnchorPane>
               </content>
             </Tab>
          </tabs>

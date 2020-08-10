@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox fx:id="dataBox" prefHeight="500.0" prefWidth="1067" style="-fx-alignment: left; -fx-padding: 15px; -fx-spacing: 30px;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DataController">
+   <children>
+      <BarChart fx:id="bar_chart" categoryGap="40.0" layoutX="32.0" layoutY="50.0" legendSide="LEFT" legendVisible="false" prefHeight="400.0" prefWidth="400.0" title="销量TOP5">
+        <xAxis>
+            <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+   </children>
+</HBox>
