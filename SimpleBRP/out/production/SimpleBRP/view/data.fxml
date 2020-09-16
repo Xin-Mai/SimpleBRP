@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
 <?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox fx:id="dataBox" prefHeight="500.0" prefWidth="1067" style="-fx-alignment: left; -fx-padding: 15px; -fx-spacing: 30px;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DataController">
+<HBox xmlns:fx="http://javafx.com/fxml/1" fx:id="dataBox" prefHeight="500.0" prefWidth="1067"
+      style="-fx-padding: 15px; -fx-spacing: 30px;" xmlns="http://javafx.com/javafx/8" fx:controller="controller.DataController">
    <children>
       <BarChart fx:id="bar_chart" categoryGap="40.0" layoutX="32.0" layoutY="50.0" legendSide="LEFT" legendVisible="false" prefHeight="400.0" prefWidth="400.0" title="销量TOP5">
         <xAxis>
@@ -13,5 +19,133 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
+      <VBox prefHeight="470.0" prefWidth="615.0">
+         <children>
+            <VBox prefHeight="71.0" prefWidth="462.0">
+               <children>
+                  <HBox prefHeight="30.0" prefWidth="500.0" spacing="30.0" stylesheets="@css/label1.css">
+                     <children>
+                        <Label fx:id="orderNums" textFill="#558fe8">
+                            <graphic>
+                                <Label text="总单数：" textFill="#558fe8" />
+                            </graphic>
+                        </Label>
+                        <Label fx:id="t_money" textFill="#558fe8" wrapText="true">
+                           <graphic>
+                              <Label text="总金额：" textFill="#558fe8" wrapText="true" />
+                           </graphic>
+                        </Label>
+                        <Label fx:id="t_profit" textFill="#558fe8" wrapText="true">
+                           <graphic>
+                              <Label text="总利润：" textFill="#558fe8" />
+                           </graphic>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="30.0" prefWidth="200.0" spacing="20.0" stylesheets="@css/label2.css">
+                     <children>
+                        <Label fx:id="a_profit_rate" textFill="#e5a155">
+                           <graphic>
+                              <Label text="平均利润率：" textFill="#e5a155" wrapText="true" />
+                           </graphic>
+                        </Label>
+                        <Label fx:id="a_logi" textFill="#e5a155">
+                           <graphic>
+                              <Label text="平均运费：" textFill="#e5a155" wrapText="true" />
+                           </graphic>
+                        </Label>
+                        <Label fx:id="a_profit" textFill="#e5a155">
+                           <graphic>
+                              <Label text="平均利润：" textFill="#e5a155" wrapText="true" />
+                           </graphic>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="388.0" prefWidth="611.0">
+               <children>
+                  <HBox style="-fx-spacing: 20px;">
+                     <children>
+                         <HBox style="-fx-spacing: 10px;">
+                             <children>
+                                <Label prefHeight="36.0" prefWidth="45.0" style="-fx-font-size: 14px;" text="国家:">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                                 <JFXComboBox fx:id="country" editable="true" onKeyReleased="#onTextChange" prefHeight="36.0" prefWidth="200.0" />
+                             </children>
+                         </HBox>
+                         <HBox style="-fx-spacing: 10px;">
+                             <children>
+                                 <Label prefHeight="36.0" prefWidth="45.0" style="-fx-font-size: 14px;" text="物流：" />
+                                 <JFXComboBox fx:id="logis" editable="true" prefHeight="36.0" prefWidth="200.0" />
+                             </children>
+                         </HBox>
+                        <JFXButton onMouseClicked="#onSearch" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #e47b7b;" text="搜索" textFill="WHITE">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="305.0" prefWidth="611.0">
+                     <children>
+                        <PieChart fx:id="pie_chart" labelLineLength="15.0" legendVisible="false" prefHeight="219.0" prefWidth="581.0" style="-fx-font-size: 12px;" title="热销款式">
+                           <HBox.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </HBox.margin>
+                        </PieChart>
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="81.0" prefWidth="611.0">
+                     <children>
+                        <HBox prefHeight="30.0" prefWidth="500.0" spacing="30.0" stylesheets="@css/label1.css">
+                           <children>
+                              <Label fx:id="orderNums1" textFill="#558fe8">
+                                 <graphic>
+                                    <Label text="总单数：" textFill="#558fe8" />
+                                 </graphic>
+                              </Label>
+                              <Label fx:id="t_money1" textFill="#558fe8" wrapText="true">
+                                 <graphic>
+                                    <Label text="总金额：" textFill="#558fe8" wrapText="true" />
+                                 </graphic>
+                              </Label>
+                              <Label fx:id="t_profit1" textFill="#558fe8" wrapText="true">
+                                 <graphic>
+                                    <Label text="总利润：" textFill="#558fe8" />
+                                 </graphic>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="30.0" prefWidth="200.0" spacing="20.0" stylesheets="@css/label2.css">
+                           <children>
+                              <Label fx:id="a_profit_rate1" textFill="#e5a155">
+                                 <graphic>
+                                    <Label text="平均利润率：" textFill="#e5a155" wrapText="true" />
+                                 </graphic>
+                              </Label>
+                              <Label fx:id="a_logi1" textFill="#e5a155">
+                                 <graphic>
+                                    <Label text="平均运费：" textFill="#e5a155" wrapText="true" />
+                                 </graphic>
+                              </Label>
+                              <Label fx:id="a_profit1" textFill="#e5a155">
+                                 <graphic>
+                                    <Label text="平均利润：" textFill="#e5a155" wrapText="true" />
+                                 </graphic>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
    </children>
 </HBox>

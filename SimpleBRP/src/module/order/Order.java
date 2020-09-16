@@ -124,7 +124,7 @@ public class Order {
 
     public float getMoney()
     {
-        return money;
+        return money*DOLLARS_RATE;
     }
 
     public String getCountry() {

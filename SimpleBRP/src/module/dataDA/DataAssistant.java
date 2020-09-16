@@ -129,6 +129,7 @@ public class DataAssistant implements DataManageable{
                     }
                 }, "info");
         infoThread.start();
+        //fillConInfo();
         return orders;
     }
 
@@ -145,6 +146,8 @@ public class DataAssistant implements DataManageable{
             info.addOrdersNum();
             info.addMoney(o.getMoney());
             info.addProfit(o.getProfit());
+            info.addLog(o.getLogistics());
+            info.addBestSales(o.getGoods());
         }
     }
 

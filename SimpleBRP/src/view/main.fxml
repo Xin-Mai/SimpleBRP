@@ -27,7 +27,7 @@
               <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" pickOnBounds="false" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                          <fx:include fx:id="dataBox" source="data.fxml"/>
+                          <fx:include fx:id="data" source="data.fxml"/>
                       </children>
                   </AnchorPane>
               </content>

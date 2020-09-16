@@ -1,5 +1,14 @@
 package module;
 
+import module.order.Goods;
+import module.order.Logistics;
+import sun.rmi.runtime.Log;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Info {
     //国家名
     private String country;
@@ -13,11 +22,17 @@ public class Info {
     private float averMoney=0;
     //平均利润
     private float averProfit=0;
+    //运费
+    private List<Logistics> logistics=new ArrayList<>();
     //畅销单品
-    private String[] bestSales;
+    private Map<String,Integer> bestSales;
+    //不记颜色的畅销单品
+    private Map<String,Integer> simpleBestSales;
 
     public Info(String country){
         this.country=country;
+        bestSales=new HashMap<>();
+        simpleBestSales=new HashMap<>();
     }
     public String getCountry() {
         return country;
@@ -51,6 +66,15 @@ public class Info {
         this.money+=money;
     }
 
+    public void addLog(Logistics l){this.logistics.add(l);}
+
+    public float getTotalLog(){
+        float log=0;
+        for(Logistics l:logistics)
+            log+=l.getMoney();
+        return log;
+    }
+
     public float getProfit() {
         return profit;
     }
@@ -64,6 +88,8 @@ public class Info {
     }
 
     public float getAverMoney() {
+        if(ordersNum>0)
+            averMoney=money/ordersNum;
         return averMoney;
     }
 
@@ -72,6 +98,8 @@ public class Info {
     }
 
     public float getAverProfit() {
+        if(ordersNum>0)
+            averProfit=profit/ordersNum;
         return averProfit;
     }
 
@@ -79,11 +107,39 @@ public class Info {
         this.averProfit = averProfit;
     }
 
-    public String[] getBestSales() {
+    public Map<String, Integer> getBestSales() {
         return bestSales;
     }
 
-    public void setBestSales(String[] bestSales) {
-        this.bestSales = bestSales;
+    public void addBestSales(List<Goods> goods) {
+        for(Goods g:goods){
+            String id=g.getId();
+            String type;
+            if(id.length()<=5)
+                type=id;
+            else if(id.contains("-"))
+                type=id.substring(0,id.indexOf("-"));
+            else
+                type=id;
+            if(simpleBestSales.keySet().contains(type))
+            {
+                simpleBestSales.put(type,simpleBestSales.get(type)+g.getQuantity());
+                if(bestSales.keySet().contains(g.getId())){
+                    bestSales.put(id,bestSales.get(id)+g.getQuantity());
+                }
+            }
+            else{
+                bestSales.put(id,g.getQuantity());
+                simpleBestSales.put(type,g.getQuantity());
+            }
+        }
+    }
+
+    public Map<String, Integer> getSimpleBestSales() {
+        return simpleBestSales;
+    }
+
+    public void setSimpleBestSales(Map<String, Integer> simpleBestSales) {
+        this.simpleBestSales = simpleBestSales;
     }
 }
