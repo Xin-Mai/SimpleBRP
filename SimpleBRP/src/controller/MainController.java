@@ -1,24 +1,33 @@
 package controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import controller.thread.LoadThread;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Pagination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import module.dataDA.DataAssistant;
 import module.dataDA.DataManageable;
 import module.order.Order;
 
 import javax.security.auth.callback.Callback;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MainController {
     //alt+enter即可把组件映射到这里
@@ -28,6 +37,7 @@ public class MainController {
     public VBox page;
     @FXML
     public HBox data;
+    public JFXButton updateButton;
     //如果不起名字叫xxController就会自动生成Controller失败
     //规则是fx:id+Controller
     @FXML
@@ -78,5 +88,39 @@ public class MainController {
         JFXComboBox logis=(JFXComboBox)scene.lookup("#logis");
         dataController.setLogis(logis);
         dataController.initPieChart();
+    }
+
+    //更新数据文件
+    public void updateDataResource(ActionEvent actionEvent) {
+        //新建对话框
+        List<String> choices=new ArrayList<>();
+        choices.add("订单");
+        choices.add("物流");
+        choices.add("成本");
+        ChoiceDialog<String> dialog=new ChoiceDialog<>("订单",choices);
+        dialog.setTitle("提示框");
+        dialog.setContentText("仅支持csv格式文件");
+        dialog.setContentText("选择数据更新类型:");
+        Optional<String> result=dialog.showAndWait();
+        if(result.isPresent()){
+            FileChooser fileChooser=new FileChooser();
+            fileChooser.setTitle("更新数据文件");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".csv","*.CSV"));
+            //选择的新资源
+            File file=fileChooser.showOpenDialog(scene.getWindow());
+            if(file!=null) {
+                //更新源文件
+                DA.updateResFile(file, result.get());
+                //更新页面数据
+                updateView();
+            }
+        }
+    }
+
+    public void updateView(){
+        List<Order> orders=DA.getAll();
+        ordersList.setPageCount(orders.size()/10);
+        pageController.setOrders(orders);
+
     }
 }

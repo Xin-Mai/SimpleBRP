@@ -6,6 +6,7 @@ import module.order.Logistics;
 import module.order.Order;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.sql.*;
 import java.util.*;
 
@@ -301,5 +302,30 @@ public class DataAssistant implements DataManageable{
         }
         return 0;
 
+    }
+
+    //更新数据文件，预计可以更新logistic,order,cost
+    @Override
+    public void updateResFile(File file, String type) {
+        String fileName=null;
+        if(type.equals("订单"))
+            fileName=ORDER_CSV_NAME;
+        else if(type.equals("物流"))
+            fileName=LOGISTIC_CSV_NAME;
+        else
+            fileName=GOODS_CSV_NAME;
+        File goal=new File(path+"/"+fileName+".csv");
+        //假如就是同一个文件
+        if(goal.toPath().equals(file.toPath()))
+            return;
+        //如果目标路径已经存在旧的数据文件，则先删除
+        if(goal.exists())
+            goal.delete();
+        try
+        {
+            Files.copy(file.toPath(),goal.toPath());
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

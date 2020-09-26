@@ -95,51 +95,12 @@ public class PageManager {
         }
     }
 
-    /**预加载3页*/
-    private List<String[]> preLoad(int page)
-    {
-        List<String[]> content = new ArrayList<>();
-        for(int i=page;i<page+30&&i<orders.size();i++)
-        {
-            Order o=orders.get(i);
-            String[] strings = new String[8];
-            //单号
-            strings[0]=o.getId();
-            //价格
-            strings[1]="$"+o.getMoney();
-            //商品编码
-            String s=o.getGoods().get(0).getId();
-            if(o.getGoods().size()>=2)
-                s+='\n'+o.getGoods().get(1).getId()+"...";
-            strings[2]=s;
-            //成本
-            strings[3]=o.getCost()+"";
-            //利润
-            s=o.getProfit()+"";
-            s=s.substring(0,s.indexOf(".")+3);
-            strings[4]=s;
-            //利润率
-            s=o.getProfitRate()*100+"";
-            s=s.substring(0,s.indexOf(".")+3)+"%";
-            strings[5]=s;
-            //收货国家
-            strings[6]=lengthFormat(o.getCountry(),0);
-            //物流方式
-            strings[7]=o.getLogistics().getServer();
-            content.add(strings);
-        }
-        return content;
-    }
-
     /**查看详情*/
     public void handleOrderDetailAction(ActionEvent actionEvent) {
     }
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
-    }
-
-    public void setPageLoader(VBox pageLoader){
-        //this.pageLoader=pageLoader;
+        createPage(0);
     }
 }

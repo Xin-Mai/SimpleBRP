@@ -21,4 +21,6 @@ public interface DataManageable {
     int getDataSize();
     //获取商品的成本
     float getGoodCost(String type);
+    //更新数据文件
+    void updateResFile(File file,String type);
 }

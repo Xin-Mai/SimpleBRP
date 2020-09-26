@@ -265,6 +265,13 @@ public class DataController {
             "Zambia 赞比亚",
             "Zimbabwe 津巴布韦"
     };
+    //单独国家的显示
+    public Label orderNums1;
+    public Label t_money1;
+    public Label t_profit1;
+    public Label a_profit_rate1;
+    public Label a_logi1;
+    public Label a_profit1;
 
     public DataController(){
 
@@ -310,7 +317,7 @@ public class DataController {
             bar_chart.getData().add(series);
         }
         if(this.orderNums!=null)
-            this.orderNums.setText(this.minfoList.size()+"");
+            this.orderNums.setText(this.minfoList.size()+"单");
         if(this.t_money!=null){
             this.t_money.setText(round2(money)+"元");
             this.t_money.setStyle("-fx-text-fill:#558fe8;");
@@ -369,6 +376,7 @@ public class DataController {
         {
             //bestSales=info.getBestSales();
             bestSales=info.getSimpleBestSales();
+            updateDataDetail(info);
         }
         else{
             bestSales=new HashMap<>();
@@ -398,8 +406,10 @@ public class DataController {
             else
                 pieChartData.add(new PieChart.Data(id,bestSales.get(id)));
         }
-        pieChartData.add(new PieChart.Data("其他1",other));
-        pieChartData.add(new PieChart.Data("其他2",other2));
+        if(other!=0)
+            pieChartData.add(new PieChart.Data("单件",other));
+        if(other2!=0)
+            pieChartData.add(new PieChart.Data("双件",other2));
         //获取pieCHart数据
         pie_chart.setData(pieChartData);
         pie_chart.getData().forEach(d -> {
@@ -422,6 +432,15 @@ public class DataController {
             tip.setText(text);
             Tooltip.install(d.getNode(), tip);
         });
+    }
+
+    private void updateDataDetail(Info info){
+        orderNums1.setText(info.getOrdersNum()+"单");
+        t_money1.setText(round2(info.getMoney())+"元");
+        t_profit1.setText(round2(info.getProfit())+"元");
+        a_logi1.setText(round2(info.getAverProfit())+"元");
+        a_profit_rate1.setText(round2(info.getAverProfitRate())+"%");
+        a_profit1.setText(round2(info.getAverProfit())+"元");
     }
 
     //根据选择的内容搜索

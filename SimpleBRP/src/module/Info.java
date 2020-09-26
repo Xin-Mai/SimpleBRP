@@ -87,6 +87,9 @@ public class Info {
         this.profit += profit;
     }
 
+    public double getAverProfitRate(){
+        return (this.profit/this.money*100);
+    }
     public float getAverMoney() {
         if(ordersNum>0)
             averMoney=money/ordersNum;
