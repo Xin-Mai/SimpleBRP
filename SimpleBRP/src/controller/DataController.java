@@ -378,13 +378,18 @@ public class DataController {
             bestSales=info.getSimpleBestSales();
             updateDataDetail(info);
         }
-        else{
+        else if(country.contains("全部")){
             bestSales=new HashMap<>();
             for(Info i:minfoList){
                 //将i.bestSales合并到bestSales中
                 //i.getBestSales().forEach((key,value)->bestSales.merge(key,value,Integer::sum));
                 i.getSimpleBestSales().forEach((key,value)->bestSales.merge(key,value,Integer::sum));
             }
+        }
+        //一只都没有售出的国家
+        else{
+            bestSales=new HashMap<>();
+            updateDataDetail();
         }
         pieChartData.clear();
         //仅售出1、2只的款式
@@ -443,6 +448,14 @@ public class DataController {
         a_profit1.setText(round2(info.getAverProfit())+"元");
     }
 
+    private void updateDataDetail(){
+        orderNums1.setText(0+"单");
+        t_money1.setText(0.00+"元");
+        t_profit1.setText(0.00+"元");
+        a_logi1.setText(0.00+"元");
+        a_profit_rate1.setText(0.00+"%");
+        a_profit1.setText(0.00+"元");
+    }
     //根据选择的内容搜索
     public void onSearch(){
         //country.setValue(country.getItems().get(0));
