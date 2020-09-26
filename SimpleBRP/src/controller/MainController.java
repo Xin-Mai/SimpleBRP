@@ -120,6 +120,7 @@ public class MainController {
     public void updateView(){
         List<Order> orders=DA.getAll();
         ordersList.setPageCount(orders.size()/10);
+        ordersList.setCurrentPageIndex(0);
         pageController.setOrders(orders);
 
     }

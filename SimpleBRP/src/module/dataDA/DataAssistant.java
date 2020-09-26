@@ -1,5 +1,6 @@
 package module.dataDA;
 
+import javafx.scene.control.Alert;
 import module.Info;
 import module.order.Goods;
 import module.order.Logistics;
@@ -76,6 +77,11 @@ public class DataAssistant implements DataManageable{
         }
         //dir+="src\\";
         path=dir;
+        File resourceDir=new File(path);
+        //创建存储资源文件的文件夹
+        if(!resourceDir.exists())
+            //注意与mkdir()区别，如果父路径不存在,mkdir()是不会创建的
+            System.out.println(resourceDir.mkdirs());
     }
 
     private void getResource() {
@@ -158,43 +164,60 @@ public class DataAssistant implements DataManageable{
             orders=orderList;
             return;
         }
-        else{
-            String sql="SELECT * FROM "+ORDER_CSV_NAME;
-
-            ResultSet resultSet=null;
-            try{
-                resultSet=statement.executeQuery(sql);
-                while(resultSet.next()){
-                    String id=resultSet.getString(orderHeaders[0]);
-                    String log_id=resultSet.getString("实际发货单号");
-                    //筛查刷单
-                    /**ResultSet与Statement是关联的，必须新开一个Statement*/
-                    Logistics logistics=isValid(log_id);
-                    //不是刷单
-                    if(logistics!=null){
-                        Order order=new Order(id);
-                        order.setLogistics(logistics);
-                        order.setOrderTime(resultSet.getString(orderHeaders[1]));
-                        order.setPayTime(resultSet.getString(orderHeaders[2]));
-                        //goods暂时空着
-                        String good=resultSet.getString(orderHeaders[3]);
-                        String[] goods=good.split(";");
-                        List<Goods> goodsList=new ArrayList<>();
-                        for(String i:goods){
-                            Goods g=new Goods(i);
-                            g.setPrice(getGoodCost(g.getId()));
-                            goodsList.add(g);
+        else {
+            String sql = "SELECT * FROM " + ORDER_CSV_NAME;
+            //首先要判断文件是否存在
+            File orderFile = new File(path + "/" + ORDER_CSV_NAME + ".csv");
+            File logFile=new File(path+"/"+LOGISTIC_CSV_NAME+".csv");
+            File costFile=new File(path+"/"+GOODS_CSV_NAME+".csv");
+            if (!(orderFile.exists()&&logFile.exists()&&costFile.exists())) {
+                //弹窗警示
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("警告");
+                alert.setHeaderText("资源文件缺失！");
+                alert.setContentText("请使用更新数据按钮，选择相应的数据文件。否则系统无法正常使用！");
+                alert.showAndWait();
+            } else {
+                ResultSet resultSet = null;
+                try {
+                    resultSet = statement.executeQuery(sql);
+                    while (resultSet.next()) {
+                        String id = resultSet.getString(orderHeaders[0]);
+                        String log_id = resultSet.getString("实际发货单号");
+                        //筛查刷单
+                        /**ResultSet与Statement是关联的，必须新开一个Statement*/
+                        Logistics logistics = isValid(log_id);
+                        //不是刷单
+                        if (logistics != null) {
+                            Order order = new Order(id);
+                            order.setLogistics(logistics);
+                            order.setOrderTime(resultSet.getString(orderHeaders[1]));
+                            order.setPayTime(resultSet.getString(orderHeaders[2]));
+                            //goods暂时空着
+                            String good = resultSet.getString(orderHeaders[3]);
+                            String[] goods = good.split(";");
+                            List<Goods> goodsList = new ArrayList<>();
+                            for (String i : goods) {
+                                Goods g = new Goods(i);
+                                g.setPrice(getGoodCost(g.getId()));
+                                goodsList.add(g);
+                            }
+                            order.setGoods(goodsList);
+                            String money = resultSet.getString(orderHeaders[4]).substring(4);
+                            order.setMoney(Float.parseFloat(money));
+                            order.setCountry(resultSet.getString(orderHeaders[5]));
+                            orders.add(order);
                         }
-                        order.setGoods(goodsList);
-                        String money=resultSet.getString(orderHeaders[4]).substring(4);
-                        order.setMoney(Float.parseFloat(money));
-                        order.setCountry(resultSet.getString(orderHeaders[5]));
-                        orders.add(order);
                     }
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("警告");
+                    alert.setHeaderText("资源文件错误！");
+                    alert.setContentText("请使用更新数据按钮，选择相应的数据文件。否则系统无法正常使用！");
+                    alert.showAndWait();
                 }
-                resultSet.close();
-            }catch(SQLException e){
-                e.printStackTrace();
             }
         }
     }
@@ -212,15 +235,28 @@ public class DataAssistant implements DataManageable{
         if(log_id.contains("\n")){
             log_id=log_id.substring(0,log_id.indexOf('\n'));
         }
-        String sql="SELECT * FROM "+ LOGISTIC_CSV_NAME+" WHERE id = '"+log_id+"'";
-        ResultSet resultSet=log_statement.executeQuery(sql);
-        if(resultSet.next()){
-            Logistics logistics=new Logistics();
-            logistics.setId(log_id);
-            logistics.setServer(resultSet.getString(logisticsHeaders[1]));
-            logistics.setWeight(resultSet.getFloat(logisticsHeaders[2]));
-            logistics.setMoney(resultSet.getFloat(logisticsHeaders[3]));
-            return logistics;
+        //判断是否存在物流文件
+        File logisFile=new File(path+"/"+LOGISTIC_CSV_NAME+".csv");
+        if(!logisFile.exists()){
+
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("警告");
+            alert.setHeaderText("物流信息文件不存在");
+            alert.setContentText("请使用更新数据按钮导入文件");
+
+            alert.showAndWait();
+        }
+        else {
+            String sql = "SELECT * FROM " + LOGISTIC_CSV_NAME + " WHERE id = '" + log_id + "'";
+            ResultSet resultSet = log_statement.executeQuery(sql);
+            if (resultSet.next()) {
+                Logistics logistics = new Logistics();
+                logistics.setId(log_id);
+                logistics.setServer(resultSet.getString(logisticsHeaders[1]));
+                logistics.setWeight(resultSet.getFloat(logisticsHeaders[2]));
+                logistics.setMoney(resultSet.getFloat(logisticsHeaders[3]));
+                return logistics;
+            }
         }
         return null;
     }
@@ -327,5 +363,7 @@ public class DataAssistant implements DataManageable{
         }catch (IOException e){
             e.printStackTrace();
         }
+        //将原有的数据清空
+        this.orderList=null;
     }
 }
